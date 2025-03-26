@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style inventario.css">
+    <title>Inventario</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>Gestión de Inventario</h2>
+        <p>Crea,edita y administra cada detalle de los productos o servicios que ventas.</p>
+
+<div class="left">
+    
+ 
+        <button class="btn btn-add",  onclick="mostrarFormulario()">+ Agregar Publicación</button>
+        
+</div>
+        
+        <!-- Filtro de categoría -->
+         <div class="right">
+
+            <select id="filtroCategoria" onchange="filtrarPublicaciones()">
+                <option value="todas">Mostrar todo</option>
+                <option value="libro">Libros</option>
+                <option value="biblia">Biblias</option>
+                <option value="novena">Novenas</option>
+            </select>
+        <!-- Barra de búsqueda -->
+        <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarPublicaciones()">
+        
+</div>
+
+        <!-- Tabla de publicaciones -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Editorial</th>
+                    <th>Categoría</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPublicaciones"></tbody>
+        </table>
+    </div>
+
+    <!-- Modal para agregar publicación -->
+    <div class="modal" id="modalAgregar">
+        <h3>Nuevo Producto</h3>
+        <input type="text" id="codigo" placeholder="Código">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="number" id="precio" placeholder="Precio">
+        <input type="text" id="editorial" placeholder="Editorial">
+        <select id="categoria">
+            <option value="libro">Libro</option>
+            <option value="biblia">Biblia</option>
+            <option value="novena">Novena</option>
+        </select>
+        <input type="file" id="imagen">
+        <button onclick="agregarPublicacion()">Guardar</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
+    </div>
+
+    <!-- Modal para editar publicación -->
+    <div class="modal" id="modalEditar">
+        <h3>Editar Producto</h3>
+        <input type="text" id="editCodigo" disabled>
+        <input type="text" id="editNombre">
+        <input type="number" id="editPrecio">
+        <input type="text" id="editEditorial">
+        <select id="editCategoria">
+            <option value="libro">Libro</option>
+            <option value="biblia">Biblia</option>
+            <option value="novena">Novena</option>
+        </select>
+        <input type="file" id="editImagen">
+        <button onclick="guardarEdicion()">Guardar</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+
+    <script>
+        let publicaciones = JSON.parse(localStorage.getItem("publicaciones")) || [];
+
+        function mostrarPublicaciones(lista = publicaciones) {
+            const tabla = document.getElementById("tablaPublicaciones");
+            tabla.innerHTML = "";
+            lista.forEach((pub, index) => {
+                let fila = `
+                    <tr>
+                        <td>${pub.codigo}</td>
+                        <td>${pub.nombre}</td>
+                        <td>${pub.precio}</td>
+                        <td>${pub.editorial}</td>
+                        <td>${pub.categoria}</td>
+                        <td><img src="${pub.imagen}" alt="Imagen" width="50"></td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editarPublicacion(${index})">Editar</button>
+                            <button class="btn btn-delete" onclick="eliminarPublicacion(${index})">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+                tabla.innerHTML += fila;
+            });
+        }
+
+        function mostrarFormulario() {
+            document.getElementById("modalAgregar").style.display = "block";
+        }
+
+        function cerrarFormulario() {
+            document.getElementById("modalAgregar").style.display = "none";
+        }
+
+        function agregarPublicacion() {
+            let codigo = document.getElementById("codigo").value;
+            let nombre = document.getElementById("nombre").value;
+            let precio = document.getElementById("precio").value;
+            let editorial = document.getElementById("editorial").value;
+            let categoria = document.getElementById("categoria").value;
+            let imagenInput = document.getElementById("imagen");
+            let imagen = "";
+
+            if (imagenInput.files.length > 0) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    imagen = e.target.result;
+                    guardarPublicacion(codigo, nombre, precio, editorial, categoria, imagen);
+                };
+                reader.readAsDataURL(imagenInput.files[0]);
+            } else {
+                guardarPublicacion(codigo, nombre, precio, editorial, categoria, imagen);
+            }
+        }
+
+        function guardarPublicacion(codigo, nombre, precio, editorial, categoria, imagen) {
+            if (codigo && nombre && precio && editorial && categoria) {
+                publicaciones.push({ codigo, nombre, precio, editorial, categoria, imagen });
+                localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+                mostrarPublicaciones();
+                cerrarFormulario();
+            } else {
+                alert("Todos los campos son obligatorios.");
+            }
+        }
+
+        function eliminarPublicacion(index) {
+            publicaciones.splice(index, 1);
+            localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+            mostrarPublicaciones();
+        }
+
+        function editarPublicacion(index) {
+            let pub = publicaciones[index];
+            document.getElementById("editCodigo").value = pub.codigo;
+            document.getElementById("editNombre").value = pub.nombre;
+            document.getElementById("editPrecio").value = pub.precio;
+            document.getElementById("editEditorial").value = pub.editorial;
+            document.getElementById("editCategoria").value = pub.categoria;
+            document.getElementById("modalEditar").style.display = "block";
+            document.getElementById("modalEditar").dataset.index = index;
+        }
+
+        function guardarEdicion() {
+            let index = document.getElementById("modalEditar").dataset.index;
+            publicaciones[index].nombre = document.getElementById("editNombre").value;
+            publicaciones[index].precio = document.getElementById("editPrecio").value;
+            publicaciones[index].editorial = document.getElementById("editEditorial").value;
+            publicaciones[index].categoria = document.getElementById("editCategoria").value;
+
+            let imagenInput = document.getElementById("editImagen");
+            if (imagenInput.files.length > 0) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    publicaciones[index].imagen = e.target.result;
+                    localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+                    mostrarPublicaciones();
+                    cerrarModal();
+                };
+                reader.readAsDataURL(imagenInput.files[0]);
+            } else {
+                localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+                mostrarPublicaciones();
+                cerrarModal();
+            }
+        }
+
+        function cerrarModal() {
+            document.getElementById("modalEditar").style.display = "none";
+        }
+
+        function buscarPublicaciones() {
+            let texto = document.getElementById("buscador").value.toLowerCase();
+            let resultado = publicaciones.filter(pub =>
+                pub.codigo.toLowerCase().includes(texto) ||
+                pub.nombre.toLowerCase().includes(texto) ||
+                pub.precio.toString().includes(texto) ||
+                pub.editorial.toLowerCase().includes(texto) ||
+                pub.categoria.toLowerCase().includes(texto)
+            );
+            mostrarPublicaciones(resultado);
+        }
+
+        function filtrarPublicaciones() {
+            let categoriaSeleccionada = document.getElementById("filtroCategoria").value;
+            let filtro = publicaciones.filter(pub => categoriaSeleccionada === "todas" || pub.categoria === categoriaSeleccionada);
+            mostrarPublicaciones(filtro);
+        }
+
+        mostrarPublicaciones();
+    </script>
+
+</body>
+</html>

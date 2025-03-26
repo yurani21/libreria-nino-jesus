@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style novenas.css">
+    <title>Novenas</title>
+    
+</head>
+<body>
+
+<div class="container">
+   <h2>Agregar Novena</h2>
+    <form class="form-section">
+        <input type="text" id="codigo" placeholder="Código" required><br>
+        <input type="text" id="nombre" placeholder="Nombre" required><br>
+        <input type="text" id="tamano" placeholder="Tamaño" required><br>
+        <input type="file" id="imagen" accept="image/*" required><br>
+        <center><button id="addNovena">Agregar Novena</button></center>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <h2>Listado de Novenas</h2>
+
+    <!-- Filtro de búsqueda -->
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Buscar por código, nombre o precio..." oninput="filterBibles()">
+    </div>
+
+    <!-- Tabla de novenas -->
+
+        <table id="table-section">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Tamaño</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaBody"></tbody>
+        </table>
+    </div>
+
+
+<script>
+    // Cargar novenas desde localStorage al cargar la página
+    document.addEventListener("DOMContentLoaded", function() {
+        let novenas = JSON.parse(localStorage.getItem("novenas")) || [];
+        novenas.forEach(novena => {
+            agregarNovena(novena.codigo, novena.nombre, novena.tamano, novena.imagen);
+        });
+    });
+
+    // Maneja el evento de agregar novena
+    document.getElementById("addNovena").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        let codigo = document.getElementById("codigo").value;
+        let nombre = document.getElementById("nombre").value;
+        let tamano = document.getElementById("tamano").value;
+        let imagenInput = document.getElementById("imagen");
+        let imagen = imagenInput.files[0];
+
+        if (codigo && nombre && tamano && imagen) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                agregarNovena(codigo, nombre, tamano, e.target.result);
+                
+                // Guardar novena en localStorage
+                let novenas = JSON.parse(localStorage.getItem("novenas")) || [];
+                novenas.push({codigo, nombre, tamano, imagen: e.target.result});
+                localStorage.setItem("novenas", JSON.stringify(novenas));
+            };
+            reader.readAsDataURL(imagen);
+            
+            // Resetear formulario
+            document.getElementById("codigo").value = '';
+            document.getElementById("nombre").value = '';
+            document.getElementById("tamano").value = '';
+            document.getElementById("imagen").value = '';
+        }
+    });
+
+    // Agregar novena a la tabla
+    function agregarNovena(codigo, nombre, tamano, imagen) {
+        let tablaBody = document.getElementById("tablaBody");
+
+        let fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${codigo}</td>
+            <td>${nombre}</td>
+            <td>${tamano}</td>
+            <td><img src="${imagen}" alt="Imagen"></td>
+            <td class="button-container">
+                <button class="edit-btn" onclick="editarNovena(this)">Editar</button>
+                <button class="delete-btn" onclick="eliminarNovena(this)">Eliminar</button>
+            </td>
+        `;
+        tablaBody.appendChild(fila);
+    }
+
+    // Eliminar novena
+    function eliminarNovena(btn) {
+        let fila = btn.parentNode.parentNode;
+        fila.remove();
+
+        // Eliminar la novena de localStorage
+        let codigo = fila.cells[0].innerText;
+        let novenas = JSON.parse(localStorage.getItem("novenas")) || [];
+        novenas = novenas.filter(novena => novena.codigo !== codigo);
+        localStorage.setItem("novenas", JSON.stringify(novenas));
+    }
+
+    // Editar novena
+    function editarNovena(btn) {
+        let fila = btn.parentNode.parentNode;
+        let columnas = fila.getElementsByTagName("td");
+
+        document.getElementById("codigo").value = columnas[0].innerText;
+        document.getElementById("nombre").value = columnas[1].innerText;
+        document.getElementById("tamano").value = columnas[2].innerText;
+        // Eliminar la imagen existente en el formulario (solo si es necesario)
+        document.getElementById("imagen").value = '';
+
+        eliminarNovena(btn);
+    }
+
+    // Filtro de búsqueda en la tabla
+    document.getElementById("search").addEventListener("keyup", function() {
+        let filtro = this.value.toLowerCase();
+        let filas = document.querySelectorAll("#tablaBody tr");
+
+        filas.forEach(fila => {
+            let texto = fila.innerText.toLowerCase();
+            fila.style.display = texto.includes(filtro) ? "" : "none";
+        });
+    });
+</script>
+
+</body>
+</html>

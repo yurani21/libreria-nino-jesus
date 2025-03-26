@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style divni.css">
+    <title>Escultura Religiosas</title>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Esculturas Religiosas</h2>
+
+        <button class="btn btn-add" onclick="mostrarFormulario()">+ Agregar Estatua</button>
+
+        <div class="right">
+
+                <input type="text" id="buscador" placeholder="Buscar...." onkeyup="buscarEstatuas()">
+            <select id="filtroCategoria" onchange="filtrarEstatuas()">
+
+                <option value="todas">Mostrar todo</option>
+                <option value="pequeña">Pequeñas</option>
+                <option value="mediana">Medianas</option>
+                <option value="grande">Grandes</option>
+            </select>
+            
+        </div>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Pulgadas</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaEstatuas"></tbody>
+        </table>
+
+        <p id="mensajeVacio" style="text-align: center; display: none; color: #3246f5;">No se encontraron resultados</p>
+    </div>
+
+    <!-- Modal para agregar estatua -->
+    <div class="modal" id="modalAgregar">
+        <h3>Nueva Estatua</h3>
+        <input type="text" id="codigo" placeholder="Código">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="number" id="precio" placeholder="Precio">
+        <input type="number" id="pulgadas" placeholder="Pulgadas">
+        <input type="file" id="imagen">
+        <button onclick="agregarEstatua()">Guardar</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
+    </div>
+
+    <!-- Modal para editar estatua -->
+    <div class="modal" id="modalEditar">
+        <h3>Editar Estatua</h3>
+        <input type="text" id="editCodigo" disabled>
+        <input type="text" id="editNombre">
+        <input type="number" id="editPrecio">
+        <input type="number" id="editPulgadas">
+        <input type="file" id="editImagen">
+        <button onclick="guardarEdicion()">Guardar</button>
+        <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+
+    <script>
+        let estatuas = JSON.parse(localStorage.getItem("estatuas")) || [];
+
+        function mostrarEstatuas(lista = estatuas) {
+            const tabla = document.getElementById("tablaEstatuas");
+            tabla.innerHTML = "";
+            document.getElementById("mensajeVacio").style.display = lista.length ? "none" : "block";
+
+            lista.forEach((estatua, index) => {
+                let fila = `
+                    <tr>
+                        <td>${estatua.codigo}</td>
+                        <td>${estatua.nombre}</td>
+                        <td>$${estatua.precio}</td>
+                        <td>${estatua.pulgadas}''</td>
+                        <td><img src="${estatua.imagen}" width="50"></td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editarEstatua(${index})">Editar</button>
+                            <button class="btn btn-delete" onclick="eliminarEstatua(${index})">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+                tabla.innerHTML += fila;
+            });
+        }
+
+        function mostrarFormulario() {
+            document.getElementById("modalAgregar").style.display = "block";
+        }
+
+        function cerrarFormulario() {
+            document.getElementById("modalAgregar").style.display = "none";
+        }
+
+        function agregarEstatua() {
+            let codigo = document.getElementById("codigo").value;
+            let nombre = document.getElementById("nombre").value;
+            let precio = document.getElementById("precio").value;
+            let pulgadas = document.getElementById("pulgadas").value;
+            let imagenInput = document.getElementById("imagen");
+
+            if (imagenInput.files.length > 0) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let imagen = e.target.result;
+                    estatuas.push({ codigo, nombre, precio, pulgadas, imagen });
+                    localStorage.setItem("estatuas", JSON.stringify(estatuas));
+                    mostrarEstatuas();
+                    cerrarFormulario();
+                };
+                reader.readAsDataURL(imagenInput.files[0]);
+            } else {
+                alert("Selecciona una imagen.");
+            }
+        }
+
+        function eliminarEstatua(index) {
+            estatuas.splice(index, 1);
+            localStorage.setItem("estatuas", JSON.stringify(estatuas));
+            mostrarEstatuas();
+        }
+
+        function editarEstatua(index) {
+            let estatua = estatuas[index];
+            document.getElementById("editCodigo").value = estatua.codigo;
+            document.getElementById("editNombre").value = estatua.nombre;
+            document.getElementById("editPrecio").value = estatua.precio;
+            document.getElementById("editPulgadas").value = estatua.pulgadas;
+            document.getElementById("modalEditar").dataset.index = index;
+            document.getElementById("modalEditar").style.display = "block";
+        }
+
+        function guardarEdicion() {
+            let index = document.getElementById("modalEditar").dataset.index;
+            estatuas[index].nombre = document.getElementById("editNombre").value;
+            estatuas[index].precio = document.getElementById("editPrecio").value;
+            estatuas[index].pulgadas = document.getElementById("editPulgadas").value;
+            localStorage.setItem("estatuas", JSON.stringify(estatuas));
+            mostrarEstatuas();
+            cerrarModal();
+        }
+
+        function cerrarModal() {
+            document.getElementById("modalEditar").style.display = "none";
+        }
+
+        function buscarEstatuas() {
+            let texto = document.getElementById("buscador").value.toLowerCase();
+            let resultado = estatuas.filter(estatua =>
+                estatua.nombre.toLowerCase().includes(texto) ||
+                estatua.codigo.toLowerCase().includes(texto) ||
+                estatua.precio.toString().includes(texto) ||
+                estatua.pulgadas.toString().includes(texto)
+            );
+            mostrarEstatuas(resultado);
+        }
+
+        function filtrarEstatuas() {
+            let filtro = document.getElementById("filtroCategoria").value;
+            let resultado = estatuas.filter(estatua => {
+                if (filtro === "pequeña") return estatua.pulgadas <= 10;
+                if (filtro === "mediana") return estatua.pulgadas > 10 && estatua.pulgadas <= 20;
+                if (filtro === "grande") return estatua.pulgadas > 20;
+                return true;
+            });
+            mostrarEstatuas(resultado);
+        }
+
+        mostrarEstatuas();
+    </script>
+
+</body>
+</html>

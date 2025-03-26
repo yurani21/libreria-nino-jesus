@@ -1,0 +1,145 @@
+/* Estilos generales */
+body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    font-size: 18px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #849db6;
+    color: rgb(255, 255, 255);
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    font-size: 20px;
+}
+
+.sidebar-nav ul li {
+    margin: 30px 0;
+}
+
+.sidebar-nav ul li a {
+    color: rgb(41, 41, 41);
+    text-decoration: none;
+    height: 100vh;
+    padding: 30px;
+    
+
+}
+
+/* Contenido principal */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.logout {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Botones */
+.btn {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+button{
+    background-color: #c9bab4;
+    color: black;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    
+}
+button:hover{
+    background-color: #a78d78;
+    
+}
+
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #d4c9c5;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal input, .modal select {
+    width: 90%;
+    padding: 10px;
+    margin: 5px;
+}
+
+table {
+    background-color: #eeebe7;
+    padding: 8px;
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+
+th {
+    background-color: #d3a376;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* .inventory-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+} */
