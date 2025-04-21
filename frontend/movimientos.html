@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>movimientos</title>
+    <link rel="stylesheet" href="./css/style movi.css">
+   
+</head>
+<body>
+    <!-- Barra lateral -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h2>Panel Administrativo</h2>
+        </div>
+        <ul class="menu">
+
+            <li><a href="#" onclick="showSection('inventario')">Inventario</a></li>
+            <li><a href="#" onclick="showSection('esculturas')">Esculturas</a></li>
+            <li><a href="#" onclick="showSection('clientes')">Clientes</a></li>
+            <li>
+                <a href="#" onclick="toggleSubMenu('reportes-submenu')">Reportes</a>
+                <ul id="reportes-submenu" class="submenu" style="display: none;">
+                    <li><a href="#" onclick="showSection('resumen-inventario')">Resumen Inventario</a></li>
+                    <li><a href="#" onclick="showSection('movimientos')">Movimientos</a></li>
+                    <li><a href="#" onclick="showSection('alertas')">Alertas</a></li>
+                    <li><a href="#" onclick="showSection('ventas')">Ventas</a></li>
+                </ul>
+            </li>
+            <li><a href="#" onclick="showSection('configuracion')">Configuración</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Movimientos -->
+        <div id="movimientos" class="section" style="display: none;">
+            <h2>Movimientos</h2>
+            <div class="form-container">
+                <center><h3>Registrar Movimiento</h3></center>
+                <form id="formMovimiento">
+                    <div class="form-group">
+                        <label for="producto">Producto</label>
+                        <select id="producto" name="producto" required>
+                            <option value="">Seleccionar Producto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Movimiento</label>
+                        <select id="tipo" required>
+                            <option value="entrada">Entrada</option>
+                            <option value="salida">Salida</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" id="cantidad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usuario">Responsable</label>
+                        <input type="text" id="usuario" placeholder="Nombre del responsable" required>
+                    </div>
+                    <center><button type="submit">Registrar Movimiento</button></center>
+                </form>
+            </div>
+
+            <h3>Movimientos Registrados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+                <tbody id="movimientos-lista">
+                    <!-- Filas dinámicas -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+    function showSection(section) {
+    document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+    const active = document.getElementById(section);
+    if (active) {
+        active.style.display = 'block';
+        if (section === 'movimientos') {
+            loadMovimientos(); // Recarga movimientos cada vez que entras a esta sección
+        }
+    }
+}
+
+    function toggleSubMenu(menuId) {
+        const submenu = document.getElementById(menuId);
+        submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    // Cargar productos desde el servidor
+    async function loadProducts() {
+    const select = document.getElementById('producto');
+    select.innerHTML = '<option value="">Seleccionar Producto</option>';
+
+    try {
+        const response = await fetch('http://localhost:3000/api/productos');
+        const productos = await response.json();
+
+        console.log('Productos recibidos:', productos); // 👈 revisa esto en la consola
+
+        productos.forEach(producto => {
+            const option = document.createElement('option');
+            option.value = JSON.stringify({ tipo: producto.tipo, id: producto.id });
+            option.textContent = producto.nombre;
+            select.appendChild(option);
+        });
+
+        if (productos.length === 0) {
+            console.warn('⚠ No se encontraron productos en la base de datos.');
+        }
+    } catch (err) {
+        console.error('Error al cargar productos:', err);
+    }
+}
+
+    
+    // Registrar movimiento
+    document.getElementById('formMovimiento').addEventListener('submit', async function (e) {
+        e.preventDefault();
+    
+        const productoSelect = document.getElementById('producto');
+        const tipoMovimiento = document.getElementById('tipo').value;
+        const cantidad = document.getElementById('cantidad').value;
+        const fecha = document.getElementById('fecha').value;
+        const usuario = document.getElementById('usuario').value;
+    
+        if (!productoSelect.value || !cantidad || !fecha || !usuario) {
+            alert('Todos los campos son obligatorios.');
+            return;
+        }
+    
+        const producto = JSON.parse(productoSelect.value);
+    
+        try {
+            const response = await fetch(`http://localhost:3000/api/inventario/${tipoMovimiento}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        tipo_producto: producto.tipo,
+        id_producto: producto.id,
+        cantidad: parseInt(cantidad),
+        usuario,
+        fecha
+    })
+});
+
+    
+            const data = await response.json();
+            if (response.ok) {
+                alert('Movimiento registrado con éxito.');
+                document.getElementById('formMovimiento').reset();
+                loadMovimientos();
+            } else {
+                alert(data.error || 'Error al registrar');
+            }
+        } catch (err) {
+            console.error('Error al registrar movimiento:', err);
+        }
+    });
+    
+    // Mostrar movimientos
+    async function loadMovimientos() {
+        const tbody = document.getElementById('movimientos-lista');
+        tbody.innerHTML = '';
+    
+        try {
+            const response = await fetch('http://localhost:3000/api/inventario/movimientos');
+            const movimientos = await response.json();
+    
+            movimientos.forEach(mov => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${mov.nombre_producto}</td>
+                    <td>${mov.tipo_movimiento}</td>
+                    <td>${mov.cantidad}</td>
+                    <td>${new Date(mov.fecha_movimiento).toLocaleDateString()}</td>
+                    <td>${mov.usuario || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (err) {
+            console.error('Error al cargar movimientos:', err);
+        }
+    }
+    
+    window.onload = function () {
+        loadProducts();
+        loadMovimientos();
+        showSection('inventario');
+    };
+    </script>
+</body>
+</html>

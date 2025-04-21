@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./css/style admi_usuario.css">
+  <title>administracion de usuarios</title>
+</head>
+<body>
+
+    <h2>Administradores</h2>
+    <table id="tablaAdmins"></table>
+    
+    <h3>Nuevo / Editar</h3>
+    <form id="formAdmin">
+      <input type="hidden" id="adminId">
+      <input type="text" id="nombre" placeholder="Nombre">
+      <input type="text" id="apellidos" placeholder="Apellidos">
+      <input type="text" id="telefono" placeholder="Teléfono">
+      <input type="email" id="correo" placeholder="Correo">
+      <input type="password" id="password" placeholder="Contraseña">
+      <input type="text" id="direccion" placeholder="Dirección">
+      <button type="submit">Guardar</button>
+    </form>
+    
+  <script>
+   const tabla = document.getElementById('tablaAdmins');
+const form = document.getElementById('formAdmin');
+
+function cargarAdministradores() {
+  fetch('/api/administradores')
+    .then(res => res.json())
+    .then(data => {
+      tabla.innerHTML = `
+        <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Acciones</th></tr>
+        ${data.map(a => `
+          <tr>
+            <td>${a.id}</td>
+            <td>${a.nombre} ${a.apellidos}</td>
+            <td>${a.correo}</td>
+            <td>
+              <button onclick='editar(${JSON.stringify(a)})'>Editar</button>
+              <button onclick='eliminar(${a.id})'>Eliminar</button>
+            </td>
+          </tr>
+        `).join('')}
+      `;
+    });
+}
+
+form.onsubmit = e => {
+  e.preventDefault();
+  const id = document.getElementById('adminId').value;
+  const body = {
+    nombre: form.nombre.value,
+    apellidos: form.apellidos.value,
+    telefono: form.telefono.value,
+    correo: form.correo.value,
+    password: form.password.value,
+    direccion: form.direccion.value
+  };
+  const url = id ? `/api/administradores/${id}` : '/api/administradores';
+  const method = id ? 'PUT' : 'POST';
+  fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(() => {
+    form.reset();
+    cargarAdministradores();
+  });
+};
+
+function editar(admin) {
+  form.adminId.value = admin.id;
+  form.nombre.value = admin.nombre;
+  form.apellidos.value = admin.apellidos;
+  form.telefono.value = admin.telefono;
+  form.correo.value = admin.correo;
+  form.direccion.value = admin.direccion;
+}
+
+function eliminar(id) {
+  if (confirm('¿Eliminar administrador?')) {
+    fetch(`/api/administradores/${id}`, { method: 'DELETE' })
+      .then(() => cargarAdministradores());
+  }
+}
+
+cargarAdministradores();
+
+  </script>
+
+</body>
+</html>

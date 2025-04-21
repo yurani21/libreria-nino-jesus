@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cambié el nombre de la hoja de estilos para evitar espacios en el nombre -->
+    <link rel="stylesheet" href="./css/style esculturare.css"> 
+    <title>Esculturas Religiosas</title>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Panel de Administrativo</h2>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="../frontend/PanelAdministrativo.html">Inventario</a></li>
+                    <li><a href="../frontend/esculturas-religiosas.html">Esculturas</a></li>
+                    <li><a href="#">Clientes</a></li>
+                    <li><a href="../frontend/reportes.html">Reportes</a></li>
+                    <li><a href="../frontend/configuracion.html">Configuración</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Esculturas Religiosas</h1>
+                <p>"Arte que inspira fe, esculturas que elevan el espíritu"</p>
+            </header>
+
+            <div class="controls">
+                <button class="btn btn-add" onclick="mostrarFormulario()">+ Agregar Estatua</button>
+
+                <select id="filtroCategoria" onchange="filtrarEstatuas()">
+                    <option value="todas">Mostrar todo</option>
+                    <option value="pequeña">Pequeñas</option>
+                    <option value="mediana">Medianas</option>
+                    <option value="grande">Grandes</option>
+                </select>
+                <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarEstatuas()">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Pulgadas</th>
+                        <th>Imagen</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEsculturas"></tbody>
+            </table>
+
+            <p id="mensajeVacio" style="text-align: center; display: none; color: #3246f5;">No se encontraron resultados</p>
+        
+            <div class="paginacion" id="paginacion" style="text-align: center; margin-top: 20px;">
+                <button onclick="paginaAnterior()">« Anterior</button>
+                <span id="paginaActual">1</span>
+                <button onclick="paginaSiguiente()">Siguiente »</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para agregar/editar estatua -->
+    <div class="modal" id="modalFormulario" style="display: none;">
+        <h3 id="tituloModal">Nueva Estatua</h3>
+        <input type="hidden" id="idEscultura" >
+        <input type="text" id="codigo" placeholder="Código">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="number" id="precio" placeholder="Precio">
+        <input type="number" id="pulgadas" placeholder="Pulgadas">
+        <input type="number" id="stock" placeholder="Stock">
+        <input type="file" id="imagen">
+        <button onclick="guardarEscultura()">Guardar</button>
+        <button onclick="cerrarFormulario()">Cancelar</button>
+    </div>
+
+    <script src="../frontend/js/panel-esculturas.js"></script>
+
+</body>
+</html>

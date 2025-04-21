@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./css/style config.css">
+  <title>Configuración</title>
+</head>
+<body>
+  <!-- Panel lateral -->
+  <nav class="sidebar">
+    <div class="logo">
+      <h2>Panel Administrativo</h2>
+    </div>
+    <ul class="menu">
+      <li><a href="../frontend/PanelAdministrativo.html">Inventario</a></li>
+      <li><a href="../frontend/esculturas religiosas.html">Esculturas</a></li>
+      <li><a href="#" onclick="showSection('clientes')">Clientes</a></li>
+      <li>
+        <a href="../frontend/reportes.html">Reportes</a>
+        <ul id="reportes-submenu" class="submenu" style="display: none;">
+          <li><a href="#" onclick="showSection('resumen-inventario')">Resumen Inventario</a></li>
+          <li><a href="#" onclick="showSection('movimientos')">Movimientos</a></li>
+          <li><a href="#" onclick="showSection('alertas')">Alertas</a></li>
+          <li><a href="#" onclick="showSection('ventas')">Ventas</a></li>
+        </ul>
+      </li>
+      <li><a href="../frontend/configuracion.html">Configuración</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido -->
+  <div class="main-content">
+
+    <!-- Sección Configuración -->
+    <div id="configuracion" class="section">
+      <h2>Configuración del Sistema</h2>
+      <div class="config-container">
+
+        <div class="config-item">
+          <h3>👤 Gestión de Administradores</h3>
+          <p>Agregar, editar o eliminar cuentas de administradores.</p>
+          <button onclick="showSection('administrar-usuarios')">Administrar Usuarios</button>
+        </div>
+
+        <!-- Seguridad y Contraseñas -->
+        <div class="config-item seguridad-card">
+          <div class="seguridad-header">
+            <span class="seguridad-icon">🔒</span>
+            <h3 class="seguridad-titulo">Seguridad y Contraseñas</h3>
+          </div>
+          <p class="seguridad-descripcion">
+            Cambiar contraseñas, activar verificación y otras medidas de seguridad.
+          </p>
+          <button id="btnGestionarSeguridad" class="btn-seguridad">Gestionar Seguridad</button>
+        </div>
+
+        <div class="config-item">
+          <h3>🛠️ Personalización del Sistema</h3>
+          <p>Modificar temas, idioma, notificaciones y apariencia general.</p>
+          <button onclick="alert('Función en construcción')">Personalizar</button>
+        </div>
+
+        <div class="config-item">
+          <h3>📤 Respaldos y Exportaciones</h3>
+          <p>Exportar datos a Excel o PDF, hacer copias de seguridad del sistema.</p>
+          <button onclick="alert('Función en construcción')">Exportar / Respaldar</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Seguridad -->
+<div id="seccion-seguridad" class="section" style="display: none;">
+  <h2>🔐 Seguridad y Contraseñas</h2>
+  <!-- Verificación (movida aquí) -->
+  <div class="verificacion-container">
+    <h3>Activar Verificación</h3>
+  
+    <div class="verificacion-card">
+      <div class="verificacion-info">
+        <label for="adminSelect">Selecciona un administrador:</label>
+        <select id="adminSelect">
+          <option value="">Cargando administradores...</option>
+        </select>
+      </div>
+  
+      <div class="verificacion-form">
+        <label for="newPassword">Nueva Contraseña:</label>
+        <input type="password" id="newPassword" placeholder="Ingresa la nueva contraseña" />
+  
+        <button onclick="actualizarPassword()">Actualizar Contraseña</button>
+      </div>
+    </div>
+  </div>
+  
+
+
+   
+    <!-- Administrar Usuarios -->
+    <div id="administrar-usuarios" class="section" style="display: none;">
+      <h2>Administradores</h2>
+      <div class="admin-form-container">
+        <center><h3>Editar Administrador</h3></center>
+        <form class="admin-form">
+          <div class="form-group"><label>Nombre</label><input type="text" placeholder="Nombre" /></div>
+          <div class="form-group"><label>Apellidos</label><input type="text" placeholder="Apellidos" /></div>
+          <div class="form-group"><label>Teléfono</label><input type="text" placeholder="Teléfono" /></div>
+          <div class="form-group"><label>Correo</label><input type="email" placeholder="Correo" /></div>
+          <div class="form-group"><label>Contraseña</label><input type="password" placeholder="Contraseña" /></div>
+          <div class="form-group"><label>Dirección</label><input type="text" placeholder="Dirección" /></div>
+          <div class="form-buttons">
+            <button type="submit">Guardar</button>
+            <button type="reset" class="cancel-btn">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Seguridad -->
+    <div id="seccion-seguridad" class="section" style="display: none;">
+      <h2>🔐 Seguridad y Contraseñas</h2>
+      <form id="formCambiarPassword">
+        <label for="correoSelect">Selecciona un correo:</label>
+        <select id="correoSelect" required></select>
+        <label for="nuevaPassword">Nueva Contraseña:</label>
+        <input type="password" id="nuevaPassword" required>
+        <center><button type="submit">Actualizar Contraseña</button></center>
+      </form>
+      
+    </div>
+
+    <!-- Alertas -->
+    <div id="alertas" class="section" style="display: none;">
+      <h2>Alertas de Inventario</h2>
+      <div class="alertas-container">
+        <div class="alert-card alert-stock-bajo">
+          <h3>Stock Bajo</h3>
+          <p>📦 Biblia Reina Valera - Solo quedan 3 unidades.</p>
+        </div>
+        <div class="alert-card alert-agotado">
+          <h3>Producto Agotado</h3>
+          <p>🚫 Escultura de San Miguel - Sin unidades disponibles.</p>
+        </div>
+        <div class="alert-card alert-exceso">
+          <h3>Exceso de Stock</h3>
+          <p>⚠️ Novena de San Judas - 100 unidades sin rotación.</p>
+        </div>
+        <div class="alert-card alert-error">
+          <h3>Error de Movimiento</h3>
+          <p>🚨 Salida registrada para producto inexistente.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+
+
+  <!-- Scripts -->
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      const section = document.getElementById(sectionId);
+      if (section) section.style.display = 'block';
+    }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    window.onload = () => {
+      showSection('configuracion');
+    };
+
+    document.getElementById("btnGestionarSeguridad").addEventListener("click", function () {
+      showSection("seccion-seguridad");
+    });
+
+    document.getElementById("formCambioPassword").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const actual = document.getElementById("actualPassword").value;
+      const nueva = document.getElementById("nuevaPassword").value;
+      const confirmar = document.getElementById("confirmarPassword").value;
+      if (nueva !== confirmar) {
+        alert("Las contraseñas no coinciden.");
+        return;
+      }
+      alert("Contraseña cambiada correctamente (simulado)");
+      this.reset();
+    });
+  
+  document.querySelector(".admin-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = {
+      nombre: form[0].value,
+      apellidos: form[1].value,
+      telefono: form[2].value,
+      correo: form[3].value,
+      password: form[4].value,
+      direccion: form[5].value,
+    };
+  
+    fetch("http://localhost:3000/api/administradores", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+      alert(response.message || "Usuario creado");
+      form.reset();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error al crear usuario");
+    });
+  });
+  
+  document.getElementById("formCambioPassword").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const actual = document.getElementById("actualPassword").value;
+    const nueva = document.getElementById("nuevaPassword").value;
+    const confirmar = document.getElementById("confirmarPassword").value;
+    const correo = prompt("Ingresa tu correo para confirmar:");
+  
+    if (nueva !== confirmar) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+  
+    fetch("http://localhost:3000/api/administradores/cambiar-password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo, actualPassword: actual, nuevaPassword: nueva })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message || data.error);
+      if (data.message) e.target.reset();
+    })
+    .catch(err => alert("Error al cambiar contraseña"));
+  });
+
+  // Cargar correos al iniciar
+fetch("http://localhost:3000/api/administradores/correos")
+  .then(res => res.json())
+  .then(data => {
+    const select = document.getElementById("correoSelect");
+    data.forEach(admin => {
+      const option = document.createElement("option");
+      option.value = admin.id;
+      option.textContent = admin.correo;
+      select.appendChild(option);
+    });
+  });
+
+// Cambiar contraseña
+document.getElementById("formCambiarPassword").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const userId = document.getElementById("correoSelect").value;
+  const nuevaPassword = document.getElementById("nuevaPassword").value;
+
+  const res = await fetch(`http://localhost:3000/api/administradores/actualizar-password/${userId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nuevaPassword })
+  });
+
+  const result = await res.json();
+  alert(result.mensaje || result.error);
+});
+
+  </script>
+
+<script>
+  // Cargar administradores al cargar la página
+  window.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:3000/api/administradores/correos")
+      .then(res => res.json())
+      .then(data => {
+        const select = document.getElementById("adminSelect");
+        select.innerHTML = `<option value="">Selecciona un administrador</option>`;
+        data.forEach(admin => {
+          const option = document.createElement("option");
+          option.value = admin.id;
+          option.textContent = admin.correo;
+          select.appendChild(option);
+        });
+      })
+      .catch(err => {
+        console.error("Error al cargar administradores:", err);
+        alert("Error al obtener la lista de correos.");
+      });
+  });
+
+  // Función para actualizar la contraseña
+  function actualizarPassword() {
+    const id = document.getElementById("adminSelect").value;
+    const nuevaPassword = document.getElementById("newPassword").value;
+
+    if (!id || !nuevaPassword) {
+      return alert("Por favor selecciona un administrador e ingresa una nueva contraseña.");
+    }
+
+    fetch(`http://localhost:3000/api/administradores/actualizar-password/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nuevaPassword })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.mensaje || "Contraseña actualizada con éxito");
+      document.getElementById("newPassword").value = "";
+    })
+    .catch(err => {
+      console.error("Error actualizando contraseña:", err);
+      alert("Error al actualizar la contraseña");
+    });
+  }
+</script>
+
+  
+  
+<!-- Botón de Iniciar Sesión -->
+
+<div class="login-bottom-right">
+  <button class="login-button" onclick="window.location.href='login.html'">
+    Iniciar Sesión
+  </button>
+</div>
+
+
+</body>
+</html>

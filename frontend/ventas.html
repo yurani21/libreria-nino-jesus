@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ventas</title>
+  <link rel="stylesheet" href="./css/style ventas.css" />
+</head>
+<body>
+  <!-- Panel lateral -->
+  <nav class="sidebar">
+    <div class="logo">
+      <h2>Panel Administrativo</h2>
+    </div>
+    <ul class="menu">
+      <li><a href="#" onclick="showSection('inventario')">Inventario</a></li>
+      <li><a href="#" onclick="showSection('esculturas')">Esculturas</a></li>
+      <li><a href="#" onclick="showSection('clientes')">Clientes</a></li>
+      <li>
+        <a href="#" onclick="toggleSubMenu('reportes-submenu')">Reportes</a>
+        <ul id="reportes-submenu" class="submenu">
+          <li><a href="#" onclick="showSection('resumen-inventario')">Resumen Inventario</a></li>
+          <li><a href="#" onclick="showSection('movimientos')">Movimientos</a></li>
+          <li><a href="#" onclick="showSection('alertas')">Alertas</a></li>
+          <li><a href="#" onclick="showSection('ventas')">Ventas</a></li>
+        </ul>
+      </li>
+      <li><a href="#" onclick="showSection('configuracion')">Configuración</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Sección Ventas -->
+    <div id="ventas" class="section" style="display: none;">
+      <h2>Ventas Realizadas</h2>
+
+      <div class="filtros">
+        <label>Filtrar por fecha:</label>
+        <input type="date" id="fechaInicio">
+        <input type="date" id="fechaFin">
+        <button onclick="filtrarVentas()">Filtrar</button>
+        <button onclick="exportarPDF()">Exportar PDF</button>
+        <button onclick="exportarExcel()">Exportar Excel</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="tablaVentas">
+          <!-- Aquí van las ventas dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function toggleSubMenu(id) {
+      const menu = document.getElementById(id);
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function filtrarVentas() {
+      alert("Función de filtro de ventas no implementada aún.");
+    }
+
+    function exportarPDF() {
+      alert("Exportación a PDF simulada.");
+    }
+
+    function exportarExcel() {
+      alert("Exportación a Excel simulada.");
+    }
+
+    // Mostrar sección por defecto
+    window.onload = () => {
+      showSection('ventas');
+    };
+  </script>
+</body>
+</html>

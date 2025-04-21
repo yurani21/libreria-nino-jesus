@@ -51,7 +51,7 @@
     const apellidos = document.getElementById("apellidos").value;
     const telefono = document.getElementById("telefono").value;
     const correo = document.getElementById("correo").value;
-    const password = document.getElementById("password").value;
+    const password = document.getElementById("loginPassword").value;
     const direccion = document.getElementById("direccion").value;
 
     fetch('http://localhost:3000/register', {
@@ -86,7 +86,7 @@ function iniciarSesion() {
     const correo = document.getElementById("correo").value;
     const password = document.getElementById("password").value;
 
-    fetch('http://localhost:3000/login', {
+    fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo, password })
@@ -94,10 +94,10 @@ function iniciarSesion() {
     .then(response => response.json())
     .then(data => {
         if (data.mensaje) {
-            alert(data.mensaje);  // ✅ Mensaje de éxito
+            alert(data.mensaje);  
             window.location.href = "dashboard.html";  // 🔄 Redirige a otra página si quieres
         } else if (data.error) {
-            alert(data.error);  // ❌ Muestra el mensaje de error
+            alert(data.error);  
         }
     })
     .catch(error => console.error('Error:', error));
@@ -107,13 +107,15 @@ async function login() {
     const correo = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
 
+    console.log("Intentando login con:", correo, password); // 👈
+
     if (!correo || !password) {
         alert("Por favor, llena todos los campos.");
         return;
     }
 
     try {
-        const response = await fetch("http://localhost:3000/login", {
+        const response = await fetch('http://localhost:3000/api/login', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ correo, password }),
@@ -122,16 +124,17 @@ async function login() {
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.message); // ✅ Mensaje de éxito
-            window.location.href = "PanelAdministrativo.html"; // Redirige al panel
+            alert(data.mensaje);
+            window.location.href = "PanelAdministrativo.html";
         } else {
-            alert(data.error); // ❌ Muestra mensaje de error
+            alert(data.error);
         }
     } catch (error) {
         console.error("Error en el login:", error);
         alert("Error al intentar iniciar sesión.");
     }
-} 
+}
+
 </script>
 </body>
 </html>

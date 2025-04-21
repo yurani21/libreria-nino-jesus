@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./css/style reportes.css">
+  <title>Reportes</title>
+</head>
+<body>
+  <!-- Panel lateral -->
+  <nav class="sidebar">
+    <div class="logo">
+      <h2>Panel Administrativo</h2>
+    </div>
+    <ul class="menu">
+      <li><a href="../frontend/PanelAdministrativo.html">Inventario</a></li>
+      <li><a href="../frontend/esculturas religiosas.html">Esculturas</a></li>
+      <li><a href="#" onclick="showSection('clientes')">Clientes</a></li>
+      <li><a href="#" onclick="showSection('reportes')">Reportes</a></li>
+      <li><a href="../frontend/configuracion.html">Configuración</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- SECCIÓN DE REPORTES -->
+    <div id="reportes" class="section">
+      <h2>Reportes del Sistema</h2>
+      <div class="config-container">
+        <!-- Resumen de inventario -->
+        <div class="config-item">
+          <h1>📦 Resumen de Inventario</h1>
+          <p>Consulta el total de productos y los más vendidos</p>
+          <button onclick="showSection('detalles-inventario')">Ver Resumen</button>
+        </div>
+
+
+<!-- Movimientos de inventario -->
+<div class="config-item">
+    <h3>🔄 Movimientos de Inventario</h3>
+    <p>Registro de entradas y salidas.</p>
+    <button onclick="showSection('movimientos')">Ver Movimientos</button>
+</div>
+
+        <!-- Alertas -->
+        <div class="config-item">
+          <h3>🚨 Alertas</h3>
+          <p>Stock bajo, agotado, errores de movimiento, etc.</p>
+          <button onclick="showSection('alertas')">Ver Alertas</button>
+        </div>
+
+        <!-- Ventas -->
+        <div class="config-item">
+          <h3>💰 Ventas</h3>
+          <p>Consulta y exportación de ventas realizadas.</p>
+          <button onclick="showSection('ventas')">Ver Ventas</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles de Inventario -->
+    <div id="detalles-inventario" class="section" style="display: none;">
+      <h2>Resumen de Inventario</h2>
+    
+      <!-- CUADRO LIBROS -->
+      <div class="resumen-card libros-card">
+        <h3>📚 Libros, Biblias y Novenas</h3>
+        <ul>
+          <li id="cantidad-libros">Total de Libros: ...</li>
+          <li id="cantidad-biblias">Total de Biblias: ...</li>
+          <li id="cantidad-novenas">Total de Novenas: ...</li>
+          <li>
+            <strong>Productos más vendidos:</strong>
+            <ul id="productos-mas-vendidos"></ul>
+          </li>
+          <li id="valor-total-libros">Valor total: ...</li>
+        </ul>
+        <canvas id="grafico-libros" width="400" height="300"></canvas>
+      </div>
+    
+      <!-- CUADRO 2: ESCULTURAS -->
+      <div class="resumen-card esculturas-card">
+        <h3>🗿 Esculturas</h3>
+        <ul>
+          <li id="total-esculturas">Total de Esculturas: ...</li>
+          <li>
+            <strong>Productos más vendidos:</strong>
+            <ul id="esculturas-mas-vendidas"></ul>
+          </li>
+          <li id="valor-total-esculturas">Valor total: ...</li>
+        </ul>
+        <canvas id="grafico-esculturas" width="400" height="300"></canvas>
+      </div>
+    
+      <button onclick="showSection('reportes')">Volver a Reportes</button>
+      <button onclick="exportarResumenPDF()">🖨️ Exportar a PDF</button>
+    </div>
+
+    <!-- Movimientos de Inventario -->
+    <div id="movimientos" class="section" style="display: none;">
+      <h2>🔄 Movimientos de Inventario</h2>
+      <p>Registro de entradas y salidas de productos.</p>
+      <button onclick="showSection('reportes')">Volver a Reportes</button>
+    </div>
+    
+
+    <!-- Alertas de Inventario -->
+    <div id="alertas" class="section" style="display: none;">
+      <h2>🚨 Alertas de Inventario</h2>
+      <div class="alertas-container">
+        <div class="alert-card alert-stock-bajo"><h3>Stock Bajo</h3><p> Biblia Reina Valera - Solo quedan 3 unidades.</p></div>
+        <div class="alert-card alert-agotado"><h3>Producto Agotado</h3><p>Escultura de San Miguel - Sin unidades disponibles.</p></div>
+        <div class="alert-card alert-exceso"><h3>Exceso de Stock</h3><p> Novena de San Judas - 100 unidades sin rotación.</p></div>
+        <div class="alert-card alert-error"><h3>Error de Movimiento</h3><p>Salida registrada para producto inexistente.</p></div>
+      </div>
+      <button onclick="showSection('reportes')">Volver a Reportes</button>
+    </div>
+
+    <!-- Ventas -->
+    <div id="ventas" class="section" style="display: none;">
+      <h2>💰 Ventas</h2>
+      <p>Consulta y exportación de ventas realizadas.</p>
+      <button onclick="showSection('reportes')">Volver a Reportes</button>
+    </div>
+    
+
+    <div id="area-para-pdf">
+    <!-- cuadro de libros -->
+    <!-- cuadro de esculturas -->
+  </div>
+  </div>
+  
+  
+
+  
+
+
+  <script src="../frontend/js/panel-reportes.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>
