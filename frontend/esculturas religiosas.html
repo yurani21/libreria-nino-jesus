@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Cambié el nombre de la hoja de estilos para evitar espacios en el nombre -->
-    <link rel="stylesheet" href="./css/style esculturare.css"> 
+    <link rel="stylesheet" href="../frontend/css/style esculturare.css">
     <title>Esculturas Religiosas</title>
 </head>
 <body>
@@ -69,16 +69,19 @@
     <!-- Modal para agregar/editar estatua -->
     <div class="modal" id="modalFormulario" style="display: none;">
         <h3 id="tituloModal">Nueva Estatua</h3>
-        <input type="hidden" id="idEscultura" >
-        <input type="text" id="codigo" placeholder="Código">
-        <input type="text" id="nombre" placeholder="Nombre">
-        <input type="number" id="precio" placeholder="Precio">
-        <input type="number" id="pulgadas" placeholder="Pulgadas">
-        <input type="number" id="stock" placeholder="Stock">
-        <input type="file" id="imagen">
-        <button onclick="guardarEscultura()">Guardar</button>
-        <button onclick="cerrarFormulario()">Cancelar</button>
+        <form id="formEscultura" enctype="multipart/form-data" onsubmit="guardarEscultura(); return false;">
+            <input type="hidden" id="idEscultura">
+            <input type="text" id="codigo" placeholder="Código">
+            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="number" id="precio" placeholder="Precio">
+            <input type="number" id="pulgadas" placeholder="Pulgadas">
+            <input type="number" id="stock" placeholder="Stock">
+            <input type="file" id="imagen">
+            <button type="submit">Guardar</button>
+            <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+        </form>
     </div>
+    
 
     <script src="../frontend/js/panel-esculturas.js"></script>
 

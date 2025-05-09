@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   font-size: 16px;
+  
 }
 
 /* FUENTE GENERAL */
@@ -55,8 +56,8 @@ body {
 /* CONTENIDO PRINCIPAL */
 .main-content {
   margin-left: 260px;
-  padding: 30px;
-  width: 100%;
+  padding: 40px;
+  width: 95%;
 }
 
 /* SECCIONES */
@@ -178,18 +179,9 @@ table tr:hover td {
   background-color: #f3f3f3;
 }
 
-/* Mejor estilo para la sección de detalles del inventario */
-#detalles-inventario {
-  padding: 20px;
-  
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  margin: 20px;
-}
-
-/* Títulos con mejor jerarquía */
 #detalles-inventario h2, h3{
-  color: #2c3e50;
-  font-size: 28px;
+  color: black;
+  font-size: 20px;
   margin-bottom: 20px;
 }
 
@@ -210,32 +202,20 @@ table tr:hover td {
 #productos-cantidad li,
 #productos-mas-vendidos li,
 #esculturas-mas-vendidas li {
-  background-color: #ffffff;
+  background-color: #e6e1e1;
   border-left: 5px solid #3498db;
   margin-bottom: 10px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 6px;
   font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* Valor total */
-#valor-total {
-  background-color: #dff9fb;
-  color: #130f40;
-  font-weight: bold;
-  padding: 15px;
-  font-size: 18px;
-  border-left: 5px solid #27ae60;
-  border-radius: 6px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px black;
+  width: 95%;
 }
 
 /* Botón de volver */
 #detalles-inventario button {
   background-color: #2980b9;
-  color: white;
+  color: black;
   border: none;
   padding: 10px 25px;
   font-size: 15px;
@@ -249,18 +229,17 @@ table tr:hover td {
 }
 
 .resumen-card {
-  background-color: #ffffff;
+  background-color: #5a8cad6b;
   padding: 10px;
-  margin: 25px 0;
+  margin: 10px 0;
   border-left: 6px solid #3498db;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 75%;
 }
 
 .resumen-card h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #2c3e50;
+  font-size: 20px;
+  margin-bottom: 15px; 
 }
 
 .resumen-card ul {
@@ -276,4 +255,227 @@ table tr:hover td {
 /* Opcional: Diferente color de borde para esculturas */
 .esculturas-card {
   border-left-color: #e67e22;
+}
+
+/* Estilo para el botón de agregar (+) Movimientos salidas */
+.agregar-salida {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+#btn-agregar {
+  font-size: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+#btn-agregar:hover {
+  background-color: #2980b9;
+}
+
+/* Estilo para el formulario flotante */
+.formulario-salida {
+  margin-top: 20px;
+  background-color: #44759498;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  max-width: 400px;
+  margin: 0 auto;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999; /* Asegurarse de que esté sobre la tabla */
+  display: none;
+  overflow-y: auto;
+  max-height: 80%;
+  padding-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: black;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button[type="submit"],
+button[type="button"] {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  background-color: #98cdf0dc;
+}
+
+/* Botón de cancelar */
+button[type="button"] {
+  background-color: #e74c3c;
+}
+
+button[type="button"]:hover {
+  background-color: #c0392b;
+}
+
+/* Estilo para la tabla */
+table {
+  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #eeebe7;
+  padding: 8px;
+  color: black;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid black;
+}
+
+th {
+  background-color: #7ba9d6;
+}
+
+button {
+  background-color: #2980b9;
+  color: black;
+  border: none;
+  padding: 10px 25px;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* ESTILOS DE ALERTAS */
+.alertas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.alert-card {
+  padding: 15px;
+  position: relative;
+  z-index: 10;
+  border-radius: 8px;
+  border-left: 5px solid;
+  color: white;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.alert-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.alert-card p {
+  font-size: 1rem;
+  margin-bottom: 0;
+  color: black;
+}
+
+/* Tipos de alertas */
+.alert-stock-bajo {
+  background-color: #557976a1; /* Color sólido sin transparencia */
+  border-color: #4d8892;
+}
+
+.alert-agotado {
+  background-color: #e74d3c81;
+  border-color: #e7935b;
+}
+
+.alert-exceso {
+  background-color: #739dff81;
+  border-color: #73a4ff;
+}
+
+.alert-error {
+  background-color: #6261a78a;
+  border-color: #7f61a7;
+}
+
+/* Efectos hover para las alertas */
+.alert-card:hover {
+  transform: translateY(-5px);
+  opacity: 0.9;
+}
+
+/* Estilos de botones */
+button {
+  background-color: #2980b9;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #21618c;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Separación entre las alertas y la tabla */
+#alertas {
+  margin-top: 20px;
+}
+
+/* CSS prevent page break inside a section */
+.avoid-page-break {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }

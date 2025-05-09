@@ -1,111 +1,238 @@
 body {
-    font-family:'Times New Roman', Times, serif;
-    background-color: #f4f4f9;
+    font-family: 'Times New Roman', Times, serif;
     margin: 0;
     padding: 0;
-}
-
-h1, h2 {
-    text-align: center;
-    color: #000000;
-}
-
-.form-container, .table-container {
-    background-color: #fff2df;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #a8a7a7;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #d3a376;
-    font-family:'Times New Roman', Times, serif;
-    font-size: 18px;
-    width: 40%;
-    color: rgb(0, 0, 0);
-    cursor: pointer;
-    border: none;
-}
-
-button:hover {
-    background-color: #c2c0ce;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-    border: 1px solid #000000;
-}
-
-th {
     background-color: #f4f4f4;
-    color: #000000;
-}
-
-td img {
-    max-width: 100px;
-    height: auto;
-}
-
-.action-buttons button {
-    padding: 6px 12px;
-    margin: 4px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.edit-button {
-    background-color: #d3a376;
-    color: rgb(0, 0, 0);
-}
-
-.edit-button:hover {
-    background-color: #929292;
-}
-
-.delete-button {
+  }
+  
+  header, .overlay{
+    background: transparent; /* Hace que el fondo sea visible */
+    background-color: #e05e5e;
+    color: white;
+    padding: 10px 0;
     text-align: center;
-    background-color: #cea292;
-    color: rgb(0, 0, 0);
-}
-
-.delete-button:hover {
-    background-color: #c08974;
-}
-
-.empty-message {
-    color: #777;
-    font-size: 16px;
-    display: none;
-}
-
-.search-container {
-    text-align:left;
-    margin-bottom: 15px;
-}
-
-.search-container input {
-    width: 100%;
+  }
+  
+  #biblias-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .biblia {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+  }
+  
+  .biblia img {
+    width: 180px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  
+  .biblia h3 {
+    font-size: 14px;
+    color: #333;
+    text-align:justify;
+  }
+  
+  .biblia p {
+    color: #666;
+  }
+  
+  #biblia-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  }
+
+   /* Contenedor del catálogo */
+  .grid-libros {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+  }
+
+
+/* Tarjeta de cada libro */
+.biblia-card {
+  width: 150px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
+/* Imagen con tamaño fijo */
+.biblia-card img {
+  width: 150px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.btn-agregar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-agregar:hover {
+  background-color: #0056b3;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+.container-navbar {
+	background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.navbar {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+/* .navbar .fa-bars {
+	display: none;
+} */
+
+.menu {
+	display: flex;
+	gap: 20px;
+  list-style: none;
+}
+
+.menu li a{
+	text-decoration: none;
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    position: relative;
+}
+
+/* Estilo para la barra de búsqueda */
+.search-form {
+	display: flex;
+	align-items: center;
+	border: 1px solid #585858;
+	border-radius: 2rem;
+	background-color: #fff;
+	height: 2.2rem;
+	overflow: hidden;
+  margin-left: 10%;
+}
+.search-form input {
+	outline: none;
+	font-family:'Times New Roman', Times, serif;
+	border: none;
+	width: 450%;
+	font-size: 16px;
+	padding: 5px 10px;
+	color: black;
+	cursor: pointer;
+}
+
+.search-form input::-webkit-search-cancel-button {
+	appearance: none;
+}
+
+.search-form .btn-search {
+	border: none;
+	background-color: var(--primary-color);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 1rem;
+}
+
+.btn-search i {
+	font-size: 2rem;
+	color: black;
+}
+
+.catalogo-container {
+    padding: 30px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .grid-catalogo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  
+  .tarjeta-biblia {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  
+  .tarjeta-biblia:hover {
+    transform: scale(1.03);
+  }
+  
+  .tarjeta-biblia img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  
+  .tarjeta-biblia p {
+    font-weight: bold;
+    color: #444;
+  }
+  
+  .boton-carrito {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .boton-carrito:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-agregar-carrito{
+    float: right;
+    margin-right: 10px;
+  }

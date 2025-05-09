@@ -6,10 +6,11 @@
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.2",
     "mysql": "^2.18.1",
-    "mysql2": "^3.14.0",
+    "mysql2": "^3.14.1",
     "path": "^0.12.7",
     "pdfkit": "^0.16.0"
   },

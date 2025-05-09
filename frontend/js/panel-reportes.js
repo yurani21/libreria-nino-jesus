@@ -1,26 +1,13 @@
-// Simulación de datos (puedes reemplazarlo con fetch al backend real)
-const resumenInventario = {
-  tipos: {
-    Libro: 120,
-    Biblia: 95,
-    Novena: 35
-  },
-  masVendidos: [
-    'Biblia de Estudio Reina Valera',
-    'Novena a San Judas',
-    'Libro de Oraciones'
-  ],
-  valorTotal: 48500.50
-};
-
-// Mostrar los datos
+// Función para mostrar el resumen de inventario de libros
 function mostrarResumenInventario() {
-  fetch('http://localhost:3000/resumen-inventario')
+  fetch('http://localhost:3000/api/reportes/resumen-inventario')
     .then(res => res.json())
     .then(data => {
-      document.getElementById('cantidad-libros').textContent = `📘 Total de Libros: ${data.tipos.Libro || 0}`;
-      document.getElementById('cantidad-biblias').textContent = `📖 Total de Biblias: ${data.tipos.Biblia || 0}`;
-      document.getElementById('cantidad-novenas').textContent = `📜 Total de Novenas: ${data.tipos.Novena || 0}`;
+      console.log(data); // Verifica los datos que recibes
+
+      document.getElementById('cantidad-libros').textContent = `Total de Libros: ${data.tipos.Libro || 0}`;
+      document.getElementById('cantidad-biblias').textContent = `Total de Biblias: ${data.tipos.Biblia || 0}`;
+      document.getElementById('cantidad-novenas').textContent = `Total de Novenas: ${data.tipos.Novena || 0}`;
 
       const ulVendidos = document.getElementById('productos-mas-vendidos');
       ulVendidos.innerHTML = '';
@@ -30,16 +17,22 @@ function mostrarResumenInventario() {
         ulVendidos.appendChild(li);
       });
 
-      document.getElementById('valor-total-libros').textContent = `💰 Valor total de libros: $${data.valorTotal.toLocaleString()}`;
+      document.getElementById('valor-total-libros').textContent = `Valor total de libros: ${data.valorTotal}`;
+
+      graficarLibros(data.tipos); // Llama a la gráfica
     })
-    .catch(err => console.error('Error al cargar libros:', err));
+    .catch(err => {
+      console.error('Error al cargar libros:', err);
+      alert('Hubo un error al cargar los datos del inventario.');
+    });
 }
 
+// Función para mostrar el resumen de inventario de esculturas
 function mostrarResumenEsculturas() {
-  fetch('http://localhost:3000/resumen-esculturas')
+  fetch('http://localhost:3000/api/reportes/resumen-esculturas')
     .then(res => res.json())
     .then(data => {
-      document.getElementById('total-esculturas').textContent = `🗿 Total de Esculturas: ${data.total}`;
+      document.getElementById('total-esculturas').textContent = `Total de Esculturas: ${data.total}`;
 
       const ulVendidas = document.getElementById('esculturas-mas-vendidas');
       ulVendidas.innerHTML = '';
@@ -49,157 +42,330 @@ function mostrarResumenEsculturas() {
         ulVendidas.appendChild(li);
       });
 
-      document.getElementById('valor-total-esculturas').textContent = `💰 Valor total de esculturas: $${data.valorTotal.toLocaleString()}`;
+      document.getElementById('valor-total-esculturas').textContent = `Valor total de esculturas: $${data.valorTotal.toLocaleString()}`;
+
+      graficarEsculturas(data.total);
     })
     .catch(err => console.error('Error al cargar esculturas:', err));
 }
 
-// Mostrar al entrar a detalles-inventario
-if (typeof showSection === 'function') {
-  const original = showSection;
-  showSection = function (seccionId) {
-    original(seccionId);
-    if (seccionId === 'detalles-inventario') {
-      mostrarResumenInventario();
-      mostrarResumenEsculturas();
-    }
-  };
-}
+// Evento que se ejecuta cuando la página está lista
+document.addEventListener('DOMContentLoaded', () => {
+  // Esto se puede quitar o dejar si tienes una sección aparte
+  fetch('http://localhost:3000/api/reportes/cantidad-productos')
+    .then(res => res.json())
+    .then(data => {
+      if (!Array.isArray(data)) throw new Error("No es un array");
+      const productosCantidad = document.getElementById('productos-cantidad');
+      if (productosCantidad) {
+        productosCantidad.innerHTML = '';
+        data.forEach(producto => {
+          const li = document.createElement('li');
+          li.textContent = `${producto.tipo}: ${producto.cantidad}`;
+          productosCantidad.appendChild(li);
+        });
+      }
+    })
+    .catch(err => console.error('Error cargando cantidad-productos:', err));
 
-// Mostrar resumen cuando se abra la sección
-if (typeof showSection === 'function') {
-  const original = showSection;
-  showSection = function (seccionId) {
-    original(seccionId);
-    if (seccionId === 'detalles-inventario') {
-      mostrarResumenInventario();
-      mostrarResumenEsculturas();
-    }
-  };
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Cargar cantidad total por tipo de producto
-    const cantidadProductosRes = await fetch('http://localhost:3000/api/reportes/cantidad-productos');
-    const cantidadProductosData = await cantidadProductosRes.json();
-
-    const productosCantidad = document.getElementById('productos-cantidad');
-    productosCantidad.innerHTML = '';
-
-    cantidadProductosData.forEach(producto => {
-      const li = document.createElement('li');
-      li.textContent = `${producto.tipo}: ${producto.cantidad}`;
-      productosCantidad.appendChild(li);
-    });
-
-    // Cargar los productos más vendidos
-    const productosVendidosRes = await fetch('http://localhost:3000/api/reportes/inventario');
-    const productosVendidosData = await productosVendidosRes.json();
-    const listaVendidos = document.getElementById('productos-mas-vendidos');
-    listaVendidos.innerHTML = '';
-
-    productosVendidosData.forEach(producto => {
-      const li = document.createElement('li');
-      li.textContent = `${producto.nombre} - ${producto.total_vendido} vendidos`;
-      listaVendidos.appendChild(li);
-    });
-
-    // Cargar el valor total del inventario
-    const valorInventarioRes = await fetch('http://localhost:3000/api/reportes/valor-inventario');
-    const valorInventarioData = await valorInventarioRes.json();
-    document.getElementById('valor-total').textContent = `Valor total del inventario: $${valorInventarioData.valor_total}`;
-    
-  } catch (error) {
-    console.error('Error al cargar los datos del resumen:', error);
-  }
+  // Mostrar la sección de reportes automáticamente al cargar la página
+  showSection('reportes');
 });
 
-// Función para mostrar secciones
+//FUNCION PARA MOSTRAR LAS SECCIONES DE REPORTES
+
 function showSection(sectionId) {
   const sections = document.querySelectorAll('.section');
-  sections.forEach(section => {
-    section.style.display = 'none';
-  });
+  sections.forEach(section => section.style.display = 'none');
 
   const section = document.getElementById(sectionId);
   if (section) {
     section.style.display = 'block';
+
+    if (sectionId === 'detalles-inventario') {
+      mostrarResumenInventario();
+      mostrarResumenEsculturas();
+    }
+
+    if (sectionId === 'movimientos') {
+      cargarMovimientosInventario();
+    }
+
+    if (sectionId === 'alertas') {
+      cargarAlertas();
+    }
+
+    // 👇 NUEVO: Si la sección es ventas, carga el reporte de ventas
+    if (sectionId === 'ventas') {
+      cargarVentas();
+    }
   }
 }
 
+
+// Función para exportar el resumen a PDF
 function exportarResumenPDF() {
-  const elemento = document.getElementById('area-para-pdf');
+  const element = document.getElementById('detalles-inventario'); // Asegúrate de que este ID coincida con el del contenedor que deseas exportar
 
-
-  const opciones = {
-    margin:       0.5,
-    filename:     'resumen-inventario.pdf',
+  const opt = {
+    margin:       1,
+    filename:     'Resumen_Reporte.pdf',
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2 },
+    html2canvas:  { scale: 3 },
     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
   };
 
-  html2pdf().set(opciones).from(elemento).save();
+  html2pdf().set(opt).from(element).save();
 }
 
-//Función para llamar gráficas
-function graficarLibros(tipos) {
-  const ctx = document.getElementById('grafico-libros').getContext('2d');
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Libros', 'Biblias', 'Novenas'],
-      datasets: [{
-        label: 'Cantidad',
-        data: [tipos.Libro || 0, tipos.Biblia || 0, tipos.Novena || 0],
-        backgroundColor: ['#3498db', '#e67e22', '#9b59b6'],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom'
-        },
-        title: {
-          display: true,
-          text: 'Distribución de Libros/Biblias/Novenas'
-        }
-      }
-    }
-  });
-}
-graficarLibros(data.tipos);
 
-function graficarEsculturas(total) {
-  const ctx = document.getElementById('grafico-esculturas').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: ['Esculturas registradas'],
-      datasets: [{
-        label: 'Cantidad',
-        data: [total],
-        backgroundColor: ['#f39c12'],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom'
+// Gráfica para mostrar los datos de libros
+  function graficarLibros(tipos) {
+      const canvas = document.getElementById('grafico-libros');
+      canvas.width = 300;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Libros', 'Biblias', 'Novenas'],
+          datasets: [{
+            data: [tipos.Libro || 0, tipos.Biblia || 0, tipos.Novena || 0],
+            backgroundColor: ['#3498db', '#e67e22', '#9b59b6']
+          }]
         },
-        title: {
-          display: true,
-          text: 'Cantidad de Esculturas'
+        options: {
+          responsive: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'Distribución de Productos' }
+          }
         }
-      }
-    }
-  });
+      });
 }
-graficarEsculturas(data.total);
+
+// Gráfica para mostrar los datos de esculturas
+  function graficarEsculturas(total) {
+        const canvas = document.getElementById('grafico-esculturas');
+        canvas.width = 300;
+        canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Esculturas'],
+            datasets: [{
+              data: [total],
+              backgroundColor: ['#f39c12']
+            }]
+          },
+          options: {
+            responsive: false,
+            plugins: {
+              legend: { position: 'bottom' },
+              title: { display: true, text: 'Total Esculturas Registradas' }
+            }
+          }
+        });
+      }
+
+// Función para cargar los movimientos de inventario
+    function cargarMovimientosInventario() {
+      fetch('http://localhost:3000/api/reportes/movimientos')
+        .then(res => res.json())
+        .then(data => {
+          const tablaBody = document.getElementById('tabla-movimientos-body');
+          tablaBody.innerHTML = ''; // Limpiar la tabla antes de agregar los nuevos movimientos
+
+          // Recorrer los movimientos y agregarlos a la tabla
+          data.forEach(mov => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${mov.tipo_producto}</td>
+              <td>${mov.tipo_movimiento}</td>
+              <td>${mov.cantidad}</td>
+              <td>${new Date(mov.fecha).toLocaleString()}</td>
+              <td>${mov.observacion || 'Sin observación'}</td>
+            `;
+            tablaBody.appendChild(tr);
+          });
+        })
+        .catch(err => console.error('Error al cargar los movimientos:', err));
+    }
+
+// Mostrar y ocultar el formulario
+  function mostrarFormularioSalida() {
+    document.getElementById('formulario-salida').style.display = 'block';
+    document.getElementById('agregar-salida').style.display = 'none';
+  }
+
+  function ocultarFormulario() {
+      document.getElementById('formulario-salida').style.display = 'none';
+      document.getElementById('agregar-salida').style.display = 'block';
+    }
+
+// Manejar el envío del formulario
+document.getElementById('form-salida').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita que el formulario recargue la página
+
+  // Obtener los datos del formulario
+  const tipoProducto = document.getElementById('tipo-producto').value;
+  const cantidad = document.getElementById('cantidad').value;
+  const fecha = document.getElementById('fecha').value;
+  const observacion = document.getElementById('observacion').value;
+  const registradoPor = document.getElementById('registrado-por').value;
+
+  // Crear el objeto para enviar
+  const salida = {
+    tipo_producto: tipoProducto,
+    tipo_movimiento: 'Salida', 
+    cantidad: cantidad,
+    fecha: fecha,
+    observacion: observacion,
+    registrado_por: registradoPor 
+  };
+
+  // Verifica que los datos estén bien formateados antes de enviar
+  console.log('Datos a enviar:', salida);
+
+  // Enviar los datos al servidor
+  fetch('http://localhost:3000/api/movimientos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(salida) 
+  })
+  .then(response => {
+    if (!response.ok) {
+      return response.text().then(text => { throw new Error(text); });
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Movimiento registrado:', data);
+    alert('Movimiento registrado correctamente');
+    ocultarFormulario();
+  })
+  .catch(error => {
+    console.error('Error al registrar movimiento:', error.message || error);
+    alert('Hubo un error al registrar el movimiento. Intenta de nuevo.');
+  });
+});
+
+
+// Cargar movimientos
+function cargarMovimientosInventario() {
+  fetch('http://localhost:3000/api/reportes/movimientos')
+
+    .then(res => res.json())
+    .then(data => {
+      const tablaBody = document.getElementById('tabla-movimientos-body');
+      tablaBody.innerHTML = '';
+
+      data.forEach(mov => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${mov.tipo_producto}</td>
+          <td>${mov.tipo_movimiento}</td>
+          <td>${mov.cantidad}</td>
+          <td>${new Date(mov.fecha).toLocaleString()}</td>
+          <td>${mov.observacion || 'Sin observación'}</td>
+          <td>${mov.registrado_por || '-'}</td>
+        `;
+        tablaBody.appendChild(tr);
+      });
+    })
+    .catch(err => {
+      console.error('Error al cargar movimientos:', err);
+    });
+}
+
+
+//Funciones de las Alertas
+function cargarAlertas() {
+  fetch('http://localhost:3000/api/reportes/alertas')
+    .then(res => res.json())
+    .then(data => {
+      const contenedor = document.getElementById('alertas-dinamicas');
+      contenedor.innerHTML = '<h3>🆕 Alertas Nuevas</h3>';
+
+      if (data.length === 0) {
+        contenedor.innerHTML += `<p>No hay alertas en este momento.</p>`;
+        return;
+      }
+
+      data.forEach(alerta => {
+        const div = document.createElement('div');
+        div.classList.add('alert-card', `alert-${alerta.tipo}`);
+        div.innerHTML = `<h3>${formatearTipo(alerta.tipo)}</h3><p>${alerta.mensaje}</p>`;
+        contenedor.appendChild(div);
+      });
+    })
+    .catch(err => {
+      console.error('Error cargando alertas:', err);
+    });
+}
+
+// Añade esta función para mostrar bonitos los tipos
+function formatearTipo(tipo) {
+  const tipos = {
+    'stock-bajo': 'Stock Bajo',
+    'agotado': 'Producto Agotado',
+    'exceso': 'Exceso de Stock',
+    'error-movimiento': 'Error de Movimiento'
+  };
+  return tipos[tipo] || tipo;
+}
+
+//Función Ventas
+async function cargarVentas() {
+  try {
+    const res = await fetch('http://localhost:3000/ventas'); // Asegúrate de usar la URL completa si el backend está en otro puerto
+    const ventas = await res.json();
+
+    const contenedor = document.getElementById('tablaVentas');
+    contenedor.innerHTML = '';
+
+    if (ventas.length === 0) {
+      contenedor.textContent = 'No hay ventas registradas.';
+      return;
+    }
+
+    let html = `<table border="1" width="100%" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Observación</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+    ventas.forEach(v => {
+      html += `
+        <tr>
+          
+          <td>${v.producto}</td>
+          <td>${v.cantidad}</td>
+          <td>${v.precio}</td>
+          <td>${v.cliente}</td>
+          <td>${new Date(v.fecha).toLocaleString()}</td>
+          <td>${v.observacion || ''}</td>
+        </tr>`;
+    });
+
+    html += `</tbody></table>`;
+    contenedor.innerHTML = html;
+  } catch (error) {
+    console.error('Error al cargar ventas:', error);
+    document.getElementById('tablaVentas').textContent = 'Error al cargar las ventas.';
+  }
+}
+
 
 

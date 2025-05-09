@@ -1,135 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style biblias.css">
-    <title>Biblias</title>
-
+  <meta charset="UTF-8" />
+  <title>Catálogo de Biblias</title>
+  <link rel="stylesheet" href="../frontend/css/style biblias.css" />
 </head>
 <body>
+  <header>
 
-    <h1>Administrador de Biblias</h1>
-
-    <div class="form-container">
-        <h2>Agregar Biblia</h2>
-        <form id="bibleForm">
-            <input type="text" id="code" placeholder="Código" required><br>
-            <input type="text" id="name" placeholder="Nombre" required><br>
-            <input type="number" id="price" placeholder="Precio" required><br>
-            <input type="file" id="image" required><br>
-            <center><button type="submit">Agregar Biblia</button></center>
+    <!-- Navbar con los elementos al lado del logo -->
+    <div class="container-navbar">
+      <nav class="navbar container">
+        <i class="fa-solid fa-bars"></i>
+        
+        <!-- Menú -->
+        <ul class="menu">
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Libros</a></li>
+          <li><a href="#">Novedades</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contactos</a></li>
+        </ul>
+        
+        <!-- Formulario de búsqueda más pequeño -->
+        <form class="search-form">
+          <input type="search" placeholder="Buscar..." class="search-input" />
+          <button class="btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
         </form>
+      </nav>
     </div>
+  </div>
+</div>
+</header>
+    <center><h1>Catálogo Biblias</h1></center>
+    
+  
 
-    <div class="table-container">
-        <h2>Listado de Biblias</h2>
+  <section id="biblias-container" class="grid-libros"></section>  
 
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Buscar por código, nombre o precio..." oninput="filterBibles()">
-        </div>
 
-        <table id="biblesTable">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Imagen</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <p class="empty-message" id="emptyMessage">No hay biblias para mostrar.</p>
-    </div>
 
-    <script>
-        let bibles = JSON.parse(localStorage.getItem('bibles')) || [];
+  <footer>
+    <p>&copy; 2025 Todos los derechos reservados.</p>
+  </footer>
 
-        function renderBibles() {
-            const tableBody = document.querySelector('#biblesTable tbody');
-            tableBody.innerHTML = '';
-
-            bibles.forEach((bible, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${bible.code}</td>
-                    <td>${bible.name}</td>
-                    <td>${bible.price}</td>
-                    <td><img src="${bible.image}" alt="${bible.name}"></td>
-                    <td class="action-buttons">
-                        <button class="edit-button" onclick="editBible(${index})">Editar</button>
-                        <button class="delete-button" onclick="deleteBible(${index})">Eliminar</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            document.getElementById('emptyMessage').style.display = bibles.length ? 'none' : 'block';
-        }
-
-        document.querySelector('#bibleForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const code = document.querySelector('#code').value.trim();
-            const name = document.querySelector('#name').value.trim();
-            const price = document.querySelector('#price').value.trim();
-            const image = document.querySelector('#image').files[0];
-
-            if (image) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    const newBible = { code, name, price, image: reader.result };
-
-                    const existingIndex = bibles.findIndex(b => b.code === code);
-                    if (existingIndex !== -1) {
-                        bibles[existingIndex] = newBible;
-                    } else {
-                        bibles.push(newBible);
-                    }
-
-                    localStorage.setItem('bibles', JSON.stringify(bibles));
-                    renderBibles();
-                    document.querySelector('#bibleForm').reset();
-                };
-                reader.readAsDataURL(image);
-            } else {
-                alert('Por favor, selecciona una imagen.');
-            }
-        });
-
-        function editBible(index) {
-            const bible = bibles[index];
-            document.querySelector('#code').value = bible.code;
-            document.querySelector('#name').value = bible.name;
-            document.querySelector('#price').value = bible.price;
-            document.querySelector('#image').value = '';
-
-            deleteBible(index);
-        }
-
-        function deleteBible(index) {
-            bibles.splice(index, 1);
-            localStorage.setItem('bibles', JSON.stringify(bibles));
-            renderBibles();
-        }
-
-        function filterBibles() {
-            const searchText = document.querySelector('#search').value.toLowerCase();
-            const rows = document.querySelectorAll('#biblesTable tbody tr');
-
-            let visible = false;
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(searchText) ? '' : 'none';
-                if (text.includes(searchText)) visible = true;
-            });
-
-            document.getElementById('emptyMessage').style.display = visible ? 'none' : 'block';
-        }
-
-        renderBibles();
-    </script>
+  <script src="../frontend/js/panel-biblias.js"></script>  <!-- Asegúrate de que el JS esté correctamente vinculado -->
 </body>
 </html>

@@ -7,7 +7,7 @@
   <title>Reportes</title>
 </head>
 <body>
-  <!-- Panel lateral -->
+<!-- Panel lateral -->
   <nav class="sidebar">
     <div class="logo">
       <h2>Panel Administrativo</h2>
@@ -21,35 +21,34 @@
     </ul>
   </nav>
 
-  <!-- Contenido principal -->
+<!-- Contenido principal -->
   <div class="main-content">
-    <!-- SECCIÓN DE REPORTES -->
-    <div id="reportes" class="section">
+<!-- SECCIÓN DE REPORTES -->
+    <div id="reportes" class="section" style="display: none;">
       <h2>Reportes del Sistema</h2>
       <div class="config-container">
-        <!-- Resumen de inventario -->
+<!-- Resumen de inventario -->
         <div class="config-item">
           <h1>📦 Resumen de Inventario</h1>
           <p>Consulta el total de productos y los más vendidos</p>
           <button onclick="showSection('detalles-inventario')">Ver Resumen</button>
         </div>
 
-
 <!-- Movimientos de inventario -->
-<div class="config-item">
-    <h3>🔄 Movimientos de Inventario</h3>
-    <p>Registro de entradas y salidas.</p>
-    <button onclick="showSection('movimientos')">Ver Movimientos</button>
-</div>
+        <!-- <div class="config-item">
+          <h3>🔄 Movimientos</h3>
+          <p>Registro de entradas y salidas.</p>
+          <button onclick="showSection('movimientos')">Ver Movimientos</button>
+        </div> -->
 
-        <!-- Alertas -->
+<!-- Alertas -->
         <div class="config-item">
           <h3>🚨 Alertas</h3>
           <p>Stock bajo, agotado, errores de movimiento, etc.</p>
           <button onclick="showSection('alertas')">Ver Alertas</button>
         </div>
 
-        <!-- Ventas -->
+<!-- Ventas -->
         <div class="config-item">
           <h3>💰 Ventas</h3>
           <p>Consulta y exportación de ventas realizadas.</p>
@@ -58,13 +57,14 @@
       </div>
     </div>
 
-    <!-- Detalles de Inventario -->
+
+<!-- Detalles de Inventario -->
     <div id="detalles-inventario" class="section" style="display: none;">
       <h2>Resumen de Inventario</h2>
     
-      <!-- CUADRO LIBROS -->
+<!-- CUADRO LIBROS -->
       <div class="resumen-card libros-card">
-        <h3>📚 Libros, Biblias y Novenas</h3>
+        <h3>Libros, Biblias y Novenas</h3>
         <ul>
           <li id="cantidad-libros">Total de Libros: ...</li>
           <li id="cantidad-biblias">Total de Biblias: ...</li>
@@ -75,12 +75,12 @@
           </li>
           <li id="valor-total-libros">Valor total: ...</li>
         </ul>
-        <canvas id="grafico-libros" width="400" height="300"></canvas>
+        <canvas id="grafico-libros" width="50%" height="50%"></canvas>
       </div>
     
-      <!-- CUADRO 2: ESCULTURAS -->
+<!-- CUADRO 2: ESCULTURAS -->
       <div class="resumen-card esculturas-card">
-        <h3>🗿 Esculturas</h3>
+        <h3>Esculturas</h3>
         <ul>
           <li id="total-esculturas">Total de Esculturas: ...</li>
           <li>
@@ -88,57 +88,122 @@
             <ul id="esculturas-mas-vendidas"></ul>
           </li>
           <li id="valor-total-esculturas">Valor total: ...</li>
-        </ul>
-        <canvas id="grafico-esculturas" width="400" height="300"></canvas>
+        
+<!-- Total general -->
+      <li id="valor-total" style="font-weight: bold; font-size: 18px; margin-top: 20px;">
+        Valor total del inventario: ...
+      </li>
+      </ul>
+        <canvas id="grafico-esculturas" width="50%" height="50%"></canvas>
+        
       </div>
-    
-      <button onclick="showSection('reportes')">Volver a Reportes</button>
-      <button onclick="exportarResumenPDF()">🖨️ Exportar a PDF</button>
+   
+      <strong><button onclick="showSection('reportes')">Volver a Reportes</button>
+      <button onclick="exportarResumenPDF()">🖨️ Exportar a PDF</button></strong>
     </div>
-
-    <!-- Movimientos de Inventario -->
+    
+<!-- Movimientos de Inventario -->
     <div id="movimientos" class="section" style="display: none;">
-      <h2>🔄 Movimientos de Inventario</h2>
-      <p>Registro de entradas y salidas de productos.</p>
-      <button onclick="showSection('reportes')">Volver a Reportes</button>
-    </div>
-    
+        <h2>Movimientos Entradas y Salidas</h2>
+        <p>Registro de entradas y salidas de productos.</p>
 
-    <!-- Alertas de Inventario -->
-    <div id="alertas" class="section" style="display: none;">
-      <h2>🚨 Alertas de Inventario</h2>
-      <div class="alertas-container">
-        <div class="alert-card alert-stock-bajo"><h3>Stock Bajo</h3><p> Biblia Reina Valera - Solo quedan 3 unidades.</p></div>
-        <div class="alert-card alert-agotado"><h3>Producto Agotado</h3><p>Escultura de San Miguel - Sin unidades disponibles.</p></div>
-        <div class="alert-card alert-exceso"><h3>Exceso de Stock</h3><p> Novena de San Judas - 100 unidades sin rotación.</p></div>
-        <div class="alert-card alert-error"><h3>Error de Movimiento</h3><p>Salida registrada para producto inexistente.</p></div>
+<!-- Botón para agregar una salida (con el signo +) -->
+    <div id="agregar-salida" class="agregar-salida">
+        <button id="btn-agregar" onclick="mostrarFormularioSalida()">+</button>
+    </div>
+
+<!-- Formulario para Registrar Salida (Oculto por defecto) -->
+      <div id="formulario-salida" class="formulario-salida" style="display: none;">
+        <center><h3>Registrar Salida</h3></center>
+        <form id="form-salida">
+      <div class="form-group">
+        <label for="tipo-producto">Tipo de Producto:</label>
+        <select id="tipo-producto" required>
+<!-- Opciones de productos -->
+          <option value="Libro">Libro</option>
+          <option value="Biblia">Biblia</option>
+          <option value="Escultura">Escultura</option>
+          <option value="Novenas">Novenas</option>
+        </select>
       </div>
-      <button onclick="showSection('reportes')">Volver a Reportes</button>
-    </div>
 
-    <!-- Ventas -->
-    <div id="ventas" class="section" style="display: none;">
-      <h2>💰 Ventas</h2>
-      <p>Consulta y exportación de ventas realizadas.</p>
-      <button onclick="showSection('reportes')">Volver a Reportes</button>
-    </div>
-    
+      <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" placeholder="Cantidad">
+      </div>
 
-    <div id="area-para-pdf">
-    <!-- cuadro de libros -->
-    <!-- cuadro de esculturas -->
+      <div class="form-group">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" placeholder="Fecha">
+      </div>
+
+      <div class="form-group">
+        <label for="observacion">Observación:</label>
+        <input type="text" id="observacion" placeholder="Observación">
+      </div>
+
+      <div class="form-group">
+        <label for="registrado-por">Registrado por:</label>
+        <input type="text" id="registrado-por" required placeholder="Nombre de la persona que registra">
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit">Registrar Salida</button>
+        <button type="button" onclick="ocultarFormulario()">Cancelar</button>
+      </div>
+    </form>
   </div>
-  </div>
-  
-  
 
-  
+<!-- Tabla de Movimientos de Inventario -->
+      <table border="1" width="100%" style="border-collapse: collapse;">
+        <thead>    
+      <strong><th>Tipo de Producto</th>
+        <th>Tipo de Movimiento</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+        <th>Observación</th>
+        <th>Registrado por</th>
+      </tr></strong><tr>
+        
+    </thead>
+    <tbody id="tabla-movimientos-body">
+    </tbody>
+  </table>
+
+  <button onclick="showSection('reportes')">Volver a Reportes</button>
+</div>
+
+<!-- Alertas de Inventario -->
+    <div id="alertas" class="section" style="display: none;">
+      <h2>Alertas de Inventario</h2>
+      <div id="leyenda-alertas">
+        
+        <div class="alert-card alert-stock-bajo"><h3>Stock Bajo</h3></div>
+        <div class="alert-card alert-agotado"><h3>Producto Agotado</h3></div>
+        <div class="alert-card alert-exceso"><h3>Exceso de Stock</h3></div>
+        <div class="alert-card alert-error"><h3>Error de Movimiento</h3></div>
+      </div>
+      
+
+    <div id="alertas-dinamicas">
+
+      <h3>🆕 Alertas Nuevas</h3>
+      <!-- Las alertas dinámicas se insertan aquí con JS -->
+    </div>
+    <button onclick="showSection('reportes')">Volver a Reportes</button>
+  </div>
+
+<!-- Sección de Ventas -->
+        <div id="ventas" class="section" style="display: none;">
+          <h2>Reporte de Ventas</h2>
+        <!-- Tabla donde se mostrarán las ventas -->
+          <div id="tablaVentas"></div>
+        <button onclick="showSection('reportes')">Volver a Reportes</button>
+      </div>
 
 
   <script src="../frontend/js/panel-reportes.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </body>
 </html>

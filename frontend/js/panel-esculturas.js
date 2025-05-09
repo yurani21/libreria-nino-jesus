@@ -6,42 +6,53 @@ const porPagina = 5;
 // Mostrar esculturas
 
 async function mostrarEsculturas() {
-    try {
-      const res = await fetch("http://localhost:3000/api/esculturas");
-      const data = await res.json();
-      console.log(data); // Verifica si la respuesta contiene "stock"
-      esculturas = data;
-      pagina = 1;
-      renderizarTabla(esculturas);
-    } catch (err) {
-      console.error("Error al mostrar esculturas:", err);
+  try {
+    const res = await fetch("http://localhost:3000/api/esculturas");
+    const data = await res.json();
+    
+    if (data.length === 0) {
+      console.log("No hay esculturas disponibles.");
+      return;
     }
+
+    console.log("Detalles de las esculturas:", JSON.stringify(data, null, 2)); // Muestra la información completa
+
+    esculturas = data;
+    pagina = 1;
+    renderizarTabla(esculturas);
+  } catch (err) {
+    console.error("Error al mostrar esculturas:", err);
   }
+}
+
+
   
-// Editar escultura
-
+// Editar o crear escultura
 async function guardarEscultura() {
-  const id = document.getElementById("idEscultura").value;
-  const codigo = document.getElementById("codigo").value.trim();
-  const nombre = document.getElementById("nombre").value.trim();
-  const precio = document.getElementById("precio").value;
-  const pulgadas = document.getElementById("pulgadas").value;
-  const stock = document.getElementById("stock").value;
-  const imagen = document.getElementById("imagen").files[0];
+  const id = document.getElementById("idEscultura").value.trim();
 
-  if (!codigo || !nombre || !precio || !pulgadas || !stock || (!imagen && !id)) {
-    alert("Completa todos los campos. La imagen es obligatoria si estás creando una nueva escultura.");
+  const codigo = document.getElementById('codigo').value.trim();
+  const nombre = document.getElementById('nombre').value.trim();
+  const precio = document.getElementById('precio').value.trim();
+  const pulgadas = document.getElementById('pulgadas').value.trim();
+  const stock = document.getElementById('stock').value.trim();
+  const imagen = document.getElementById('imagen').files[0];
+
+  // Validación
+  if (!codigo || !nombre || !precio || !pulgadas || stock === "" || (!imagen && !id)) {
+    alert('Por favor, complete todos los campos. La imagen es obligatoria si está creando una nueva escultura.');
     return;
   }
 
   const formData = new FormData();
-  formData.append("Esc_Codigo", codigo);
-  formData.append("Esc_Nombre", nombre);
-  formData.append("Esc_Precio", precio);
-  formData.append("Esc_Pulgadas", pulgadas);
-  formData.append("stock", stock);
+  formData.append('Esc_Codigo', codigo);
+  formData.append('Esc_Nombre', nombre);
+  formData.append('Esc_Precio', precio);
+  formData.append('Esc_Pulgadas', pulgadas);
+  formData.append('stock', stock);
+
   if (imagen) {
-    formData.append("Esc_Imagen", imagen);
+    formData.append('Esc_Imagen', imagen);
   }
 
   const method = id ? "PUT" : "POST";
@@ -54,17 +65,24 @@ async function guardarEscultura() {
       method,
       body: formData
     });
+
     const result = await res.json();
 
-    if (!res.ok) throw new Error(result.error || "Error desconocido");
+    if (!res.ok) {
+      throw new Error(result.error || "Error desconocido");
+    }
 
-    alert(result.message || "Operación exitosa");
+    alert(result.message || 'Escultura guardada con éxito');
     cerrarFormulario();
     mostrarEsculturas();
   } catch (error) {
     console.error('Error al guardar la escultura:', error);
+    alert('Hubo un problema al guardar la escultura. Inténtalo de nuevo más tarde.');
   }
 }
+
+
+
 
 // Editar escultura
 
@@ -143,33 +161,61 @@ function filtrarEsculturas(){
 
 // Renderizar tabla con paginación
 function renderizarTabla(lista) {
-    const tabla = document.getElementById("tablaEsculturas");
-    tabla.innerHTML = "";
+  console.log("Datos de las esculturas para renderizar:", lista); // Ver los datos antes de renderizarlos
 
-    const inicio = (pagina - 1) * porPagina;
-    const paginadas = lista.slice(inicio, inicio + porPagina);
+  const tabla = document.querySelector("#tablaEsculturas");
 
-    paginadas.forEach(escultura => {
-        // Generar la URL de la imagen
-        const imagenURL = `http://localhost:3000/${escultura.Esc_Imagen}`;
+  tabla.innerHTML = "";
 
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-            <td>${escultura.Esc_Codigo}</td>
-            <td>${escultura.Esc_Nombre}</td>
-            <td>${parseInt(escultura.Esc_Precio)}</td>
-            <td>${escultura.Esc_Pulgadas}</td>
-            <td><img src="http://localhost:3000${escultura.Esc_Imagen}"  style="max-width: 60px; height: auto; object-fit: contain;"></td>
-            <td>${escultura.stock}</td> 
-            <td>
-                <button onclick="editarEscultura(${escultura.Id_Escultura})">Editar</button>
-                <button onclick="eliminarEscultura(${escultura.Id_Escultura})">Eliminar</button>
-            </td>
-        `;
+  const inicio = (pagina - 1) * porPagina;
+  const paginadas = lista.slice(inicio, inicio + porPagina);
 
-        tabla.appendChild(fila);
-    });
+  paginadas.forEach(escultura => {
+      // Renderizar cada escultura en la tabla
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+          <td>${escultura.Esc_Codigo}</td>
+          <td>${escultura.Esc_Nombre}</td>
+          <td>${parseInt(escultura.Esc_Precio)}</td>
+          <td>${escultura.Esc_Pulgadas}</td>
+          <td><img src="http://localhost:3000${escultura.Esc_Imagen}" style="max-width: 60px; height: auto; object-fit: contain;"></td>
+          <td>${escultura.stock}</td> 
+          <td>
+              <button onclick="editarEscultura(${escultura.Id_Escultura})">Editar</button>
+            <button onclick="eliminarEscultura(${escultura.Id_Escultura})">Eliminar</button>
+            <button onclick="publicarOcultarEscultura(${escultura.Id_Escultura})">
+              ${escultura.publicado ? 'Ocultar' : 'Publicar'}
+            </button>
+
+          </td>
+      `;
+      tabla.appendChild(fila);
+  });
 }
+
+
+// Función para publicar u ocultar una escultura
+async function publicarOcultarEscultura(id) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/esculturas/publicar-ocultar/${id}`, {
+      method: "PUT"
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) throw new Error(result.error || "Error desconocido");
+
+    alert("Escultura actualizada correctamente!");
+    mostrarEsculturas(); // Refrescar las esculturas en el panel
+  } catch (err) {
+    console.error("Error al cambiar el estado de la escultura:", err);
+    alert("Hubo un error al intentar cambiar el estado de la escultura.");
+  }
+}
+
+
+
+
 
 // Paginación
 function paginaSiguiente() {
@@ -185,6 +231,39 @@ function paginaAnterior() {
     renderizarTabla(esculturas);
   }
 }
+
+// Función para publicar una escultura
+async function publicarEscultura(id) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/esculturas/publicar/${id}`, {
+      method: "PUT"
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) throw new Error(result.error || "Error desconocido");
+
+    alert("Escultura publicada con éxito!");
+    mostrarEsculturas(); // Refrescar las esculturas en el panel
+  } catch (err) {
+    console.error("Error al publicar escultura:", err);
+    alert("Hubo un error al intentar publicar la escultura.");
+  }
+}
+
+
+async function cargarEsculturasPublicadas() {
+  try {
+    const res = await fetch("http://localhost:3000/api/esculturas/catalogo");
+    const esculturas = await res.json();
+    renderizarCatalogo(esculturas);
+  } catch (err) {
+    console.error("Error al cargar catálogo:", err);
+    document.getElementById("novedades-container").innerHTML = "<p>Error al cargar esculturas.</p>";
+  }
+}
+
+
 
 // Inicialización al cargar
 document.addEventListener("DOMContentLoaded", mostrarEsculturas);

@@ -46,12 +46,12 @@
             document.querySelector(".login-box").style.display = "block";
         }
 
-        function registrar() {
+function registrar() {
     const nombre = document.getElementById("nombre").value;
     const apellidos = document.getElementById("apellidos").value;
     const telefono = document.getElementById("telefono").value;
     const correo = document.getElementById("correo").value;
-    const password = document.getElementById("loginPassword").value;
+    const password = document.getElementById("password").value;
     const direccion = document.getElementById("direccion").value;
 
     fetch('http://localhost:3000/register', {
@@ -62,17 +62,17 @@
     .then(response => response.json())
     .then(data => {
         if (data.mensaje) {
-            alert(data.mensaje);  // ✅ Muestra mensaje de éxito
-            limpiarFormularioRegistro(); // 🧹 Limpia los campos
-            mostrarLogin(); // 🔄 Muestra el login automáticamente
+            alert(data.mensaje);  
+            limpiarFormularioRegistro();
+            mostrarLogin(); 
         } else if (data.error) {
-            alert(data.error);  // ❌ Muestra mensaje de error
+            alert(data.error);  
         }
     })
     .catch(error => console.error('Error:', error));
 }
 
-// 🧹 Función para limpiar los campos del formulario de registro
+//  Función para limpiar los campos del formulario de registro
 
 function limpiarFormularioRegistro() {
     document.getElementById("nombre").value = "";
@@ -95,7 +95,7 @@ function iniciarSesion() {
     .then(data => {
         if (data.mensaje) {
             alert(data.mensaje);  
-            window.location.href = "dashboard.html";  // 🔄 Redirige a otra página si quieres
+            window.location.href = "dashboard.html";  
         } else if (data.error) {
             alert(data.error);  
         }
@@ -104,36 +104,39 @@ function iniciarSesion() {
 }
 
 async function login() {
-    const correo = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+  const correo = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-    console.log("Intentando login con:", correo, password); // 👈
+  console.log("Intentando login con:", correo, password); // Mostrar datos de login para depuración
 
-    if (!correo || !password) {
-        alert("Por favor, llena todos los campos.");
-        return;
+  if (!correo || !password) {
+    alert("Por favor, llena todos los campos.");
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/login', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo, password }),
+    });
+
+    // Verifica si la respuesta es válida JSON
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Error en el login:", data); // Mostrar el error detallado en consola
+      throw new Error(data.error || 'Error desconocido');
     }
 
-    try {
-        const response = await fetch('http://localhost:3000/api/login', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ correo, password }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert(data.mensaje);
-            window.location.href = "PanelAdministrativo.html";
-        } else {
-            alert(data.error);
-        }
-    } catch (error) {
-        console.error("Error en el login:", error);
-        alert("Error al intentar iniciar sesión.");
-    }
+    alert(data.mensaje);
+    window.location.href = "PanelAdministrativo.html"; // Redirigir al panel administrativo
+  } catch (error) {
+    console.error("Error en el login:", error);
+    alert("Error al intentar iniciar sesión. Verifica la consola para más detalles.");
+  }
 }
+
 
 </script>
 </body>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <metaname="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" href="../frontend/css/style carrusel.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Biblioteca</title>
+
+	</head>
+	<body>
+		
+		<header>
+			<div class="container-hero">
+				<div class="container hero">
+					<div class="customer-support">
+						
+						<div class="content-customer-support">
+							
+						</div>
+					</div>
+
+					<div class="container-logo">
+						<!-- <h1 class="logo"><img src="../imagenes/logo.png" alt=""></h1> -->
+						
+					</div>
+
+					<div id="cart-header">
+						<i id="cart-icon" class="fa-solid fa-cart-shopping"></i>
+						<span id="cart-count">(0)</span>
+					</div>
+
+					<!-- Contenedor del carrito, inicialmente oculto -->
+<div id="cart-summary" class="cart-summary">
+    <h2>Resumen de tu Carrito</h2>
+    <ul id="cart-items">
+        <!-- Los productos se agregarán aquí dinámicamente -->
+    </ul>
+
+    <!-- Métodos de pago -->
+    <div id="payment-methods">
+        <h3>Métodos de pago</h3>
+        <p><strong>Selecciona un método de pago</strong></p>
+
+ <!-- Opción de pago con tarjeta -->
+ <div class="payment-option">
+	<label for="card-payment" class="payment-title">Tarjeta</label>
+	<img src="../imagenes/tarjetas.PNG" alt="Visa" class="payment-icon">
+	<p class="payment-subtitle">Paga ahora</p>
+	<input type="radio" id="card-payment" name="payment-method" checked>
+</div>
+
+	<!-- Mostrar opciones de tarjeta -->
+	<div id="card-options" class="payment-details">
+		<div class="card-details">
+			<h4>Selecciona tu tarjeta</h4>
+			<div class="card-icons">
+				<img src="../imagenes/visa.PNG" alt="Visa">
+				<img src="../imagenes/bancoCS.PNG" alt="Mastercard">
+				<img src="../imagenes/bancolombia.PNG" alt="Amex">
+				<img src="../imagenes/codensa.PNG" alt="Amex">
+				<img src="../imagenes/banco.PNG" alt="Amex" style=" width: 70px;" height="40px;">
+			</div>
+			<button id="add-card-btn">Agregar una tarjeta nueva</button>
+		</div>
+
+<!-- Formulario para agregar nueva tarjeta -->
+<form id="add-card-form" class="add-card-form" style="display: none;">
+	<h4>Agregar una tarjeta nueva</h4>
+	<label for="card-number">Número de tarjeta:</label>
+	<input type="text" id="card-number" placeholder="1234 5678 9876 5432">
+	<label for="expiry-date">Fecha de vencimiento:</label>
+	<input type="text" id="expiry-date" placeholder="MM/AA">
+	<label for="cvv">CVV:</label>
+	<input type="text" id="cvv" placeholder="123">
+	<label for="billing-address">Dirección de facturación:</label>
+	<input type="text" id="billing-address" placeholder="Dirección de facturación">
+	<button id="save-card">Agregar tu tarjeta</button>
+</form>
+</div>
+
+
+
+<!-- Métodos de pago alternativos -->
+<div id="alternative-payment">
+	<h4>Otras opciones de pago</h4>
+	<label>
+		<input type="radio" name="payment-method" value="pse"> PSE
+	  </label>
+	  <label>
+		<input type="radio" name="payment-method" value="google-pay"> Google Pay
+	  </label>
+	  <label>
+		<input type="radio" name="payment-method" value="nequi"> Nequi
+	  </label>
+	  
+</div>
+
+<!-- Código de cupón -->
+<div id="coupon-section">
+	<label for="coupon-code">Código de cupón:</label>
+	<input type="text" id="coupon-code" placeholder="Introduce tu código de cupón">
+	<button id="apply-coupon">Aplicar</button>
+</div>
+</div>
+
+<!-- Resumen de la compra -->
+<div id="order-summary">
+<p><strong>Total de artículos:</strong> <span id="item-count">0</span></p>
+<p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+<p><strong>Envío:</strong> $<span id="shipping">0.00</span></p>
+<p><strong>Total del pedido:</strong> $<span id="total">0.00</span></p>
+</div>
+
+<button id="finalize-purchase">Finalizar Compra</button>
+</div>
+
+<!-- Icono del carrito en el encabezado -->
+<div class="container-user">
+<i class="fa-solid fa-user"></i>
+</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="container-navbar">
+				<nav class="navbar container">
+					<i class="fa-solid fa-bars"></i>
+					<ul class="menu">
+						<li><a href="#">Inicio</a></li>
+                        <li><a href="#">Libros</a></li>
+						<li><a href="#">Novedades</a></li>
+						<li><a href="#">Blog</a></li>
+						<li><a href="#">Contactos</a></li>
+						
+					</ul>
+
+					<form class="search-form">
+						<input type="search" placeholder="Buscar..." />
+						<button class="btn-search">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</form>
+				</nav>
+			</div>
+		</header>
+
+		<section class="banner">
+            <div class="content-banner">
+              <p>Librería</p>
+              <h2>"Historias que tocan<br/>el corazón"</h2>
+              <a href="#">Comprar ahora</a>
+            </div>
+          </section>
+          
+    
+
+		<main class="main-content">
+			<section class="container container-features">
+				<div class="card-feature">
+					<i class="fa-solid fa-plane-up"></i>
+					<div class="feature-content">
+						<span>Envío gratuito a nivel mundial</span>
+						<p>En pedido superior a $150</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-wallet"></i>
+					<div class="feature-content">
+						<span>Contrareembolso</span>
+						<p>100% garantía de devolución de dinero</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-gift"></i>
+					<div class="feature-content">
+						<span>Tarjeta regalo especial</span>
+						<p>Ofrece bonos especiales con regalo</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-headset"></i>
+					<div class="feature-content">
+						<span>Servicio al cliente 24/7</span>
+						<p>LLámenos 24/7 al 123-456-7890</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="container top-categories">
+				<h1 class="heading-1">Mejores Categorías</h1>
+				<div class="container-categories">
+					<div class="card-category category-libros">
+                        <p>Libros</p>
+                        <a href="../frontend/libros.html">Ver más</a>
+                    </div>
+                    <div class="card-category category-biblias">
+                        <p>Biblias</p>
+                        <a href="../frontend/biblias.html">Ver más</a>
+                    </div>
+                    <div class="card-category category-novenas">
+                        <p>Novenas</p>
+                        <a href="../frontend/novenas.html">Ver más</a>
+                    </div>
+                    <div class="card-category category-esculturas">
+                        <p>Esculturas</p>
+                        <a href="../frontend/esculturas.html">Ver más</a>
+                    </div>
+                    
+				</div>
+			</section>
+
+            
+<section class="container top-products">
+    <h1 class="heading-1">Mejores Productos</h1>
+        <div class="carousel-product-wrapper">
+            <button class="carousel-btn prev">&#10094;</button>
+        <div class="carousel-product-track">
+        <div class="card-product">
+    <div class="container-img">
+        <img src="../assets/bib-01.PNG" alt="biblia1" />
+            <div class="button-group">
+            <span><i class="fa-regular fa-eye"></i></span>
+            <span><i class="fa-regular fa-heart"></i></span>
+            <span><i class="fa-solid fa-code-compare"></i></span>
+        </div>
+    </div>
+        <div class="content-card-product">
+            <h3>Bliblia Infantil</h3>
+            <span class="add-cart" data-id="1">
+            <i class="fa-solid fa-basket-shopping"></i>
+        </span>
+        <p class="price">$13.000</p>
+        </div>
+    </div>
+            
+<!-- Repite los productos -->
+
+<div class="card-product">
+<div class="container-img">
+    <img src="../assets/nov-01.PNG" alt="novena" />
+    <div class="button-group">
+        <span><i class="fa-regular fa-eye"></i></span>
+        <span><i class="fa-regular fa-heart"></i></span>
+        <span><i class="fa-solid fa-code-compare"></i></span>
+        </div>
+        </div>
+<div class="content-card-product">
+    <h3>Novena Bíblica</h3>
+    <span class="add-cart" data-id="1"><i class="fa-solid fa-basket-shopping"></i></span>
+        <p class="price">$70.000</p>
+    </div>
+</div>
+            
+<div class="card-product">
+    <div class="container-img">
+    <img src="../assets/nov-09.PNG" alt="libro" />
+        <div class="button-group">
+        <span><i class="fa-regular fa-eye"></i></span>
+        <span><i class="fa-regular fa-heart"></i></span>
+        <span><i class="fa-solid fa-code-compare"></i></span>
+    </div>
+    </div>
+        <div class="content-card-product" style="width: 216";>
+            <h3>Santa TRita de Casia</h3>
+        <span class="add-cart" data-id="1"><i class="fa-solid fa-basket-shopping"></i></span>
+    <p class="price">$50.000</p>
+</div>
+</div>
+    <div class="card-product">
+        <div class="container-img">
+        <img src="../assets/nov-08.PNG" alt="escultura" />
+        <div class="button-group">
+    <span><i class="fa-regular fa-eye"></i></span>
+    <span><i class="fa-regular fa-heart"></i></span>
+    <span><i class="fa-solid fa-code-compare"></i></span>
+        </div>
+    </div>
+        <div class="content-card-product">
+            <h3>Señor de Monserrate</h3>
+        <span class="add-cart" data-id="1"><i class="fa-solid fa-basket-shopping"></i></span>
+        <p class="price">$84.000</p>
+     </div>
+     
+    </div>
+
+    <div class="card-product">
+        <div class="container-img">
+        <img src="../assets/bib-08.PNG" alt="escultura" />
+        <div class="button-group">
+    <span><i class="fa-regular fa-eye"></i></span>
+    <span><i class="fa-regular fa-heart"></i></span>
+    <span><i class="fa-solid fa-code-compare"></i></span>
+        </div>
+    </div>
+        <div class="content-card-product">
+            <h3>Biblia</h3>
+        <span class="add-cart" data-id="1"><i class="fa-solid fa-basket-shopping"></i></span>
+        <p class="price">$62.000</p>
+     </div>
+    </div>
+</div>
+    <button class="carousel-btn next">&#10095;</button>
+    </div>
+</section>
+            
+
+    <section class="gallery">
+	<img src="../assets/bib-02.PNG" alt="Gallery Img1" class="gallery-img-1">
+    <img src="../assets/escultura20.PNG" alt="Gallery Img2" class="gallery-img-2"/> 
+    <img src="../assets/nov-06.PNG" alt="Gallery Img3" class="gallery-img-3"/>
+    <img src="../assets/bib-10.PNG" alt="Gallery Img4" class="gallery-img-4"/>
+    <img src="../assets/nov-04.PNG" alt="Gallery Img5" class="gallery-img-5"/>
+</section>
+
+<section class="container specials">
+	<h1 class="heading-1">Especiales</h1>
+        <div class="container-products">
+		<!-- Producto 1 -->
+			<div class="card-product">
+				<div class="container-img">
+					<img src="../assets/lib-espe1.PNG" alt="Cafe Irish" />
+							
+			<div class="button-group">
+			<span>
+				<i class="fa-regular fa-eye"></i>
+			</span>
+				<span>
+			<i class="fa-regular fa-heart"></i>
+				</span>
+			<span>
+			<i class="fa-solid fa-code-compare"></i>
+				</span>
+			</div>
+		</div>
+	<div class="content-card-product">
+		<h3>Pastor de la Esperanza</h3>
+		<span class="add-cart" data-id="1">
+		<i class="fa-solid fa-basket-shopping"></i>
+			</span>
+				<p class="price">$150.000</p>
+				</div>
+	</div>
+
+<!-- Producto 2 -->
+		<div class="card-product">
+		<div class="container-img">
+	<img src="../assets/bib-espe.PNG" alt="Cafe incafe-ingles.jpg"/>
+								
+	<div class="button-group">
+		<span>
+	<i class="fa-regular fa-eye"></i>
+	    </span>
+	<span>
+	<i class="fa-regular fa-heart"></i>
+	</span>
+	<span>
+		<i class="fa-solid fa-code-compare"></i>
+		</span>
+</div>
+	</div>
+		<div class="content-card-product">
+		<h3>Biblia de nuestro pueblo</h3>
+	<span class="add-cart" data-id="1">
+		<i class="fa-solid fa-basket-shopping"></i>
+		</span>
+			<p class="price">$65.000</p>
+			</div>
+			</div>
+		<!--  -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="../assets/nov-espe1.PNG" alt="Cafe Viena" />
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<h3>Las siete palabras</h3>
+							<span class="add-cart" data-id="1">								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+						<p class="price">$95.300</p>
+					</div>
+				</div>
+				<!--  -->
+				<div class="card-product">
+					<div class="container-img">
+						<img src="../assets/esc-espe.PNG" alt="Cafe Liqueurs" />
+						<div class="button-group">
+							<span>
+								<i class="fa-regular fa-eye"></i>
+							</span>
+							<span>
+								<i class="fa-regular fa-heart"></i>
+							</span>
+							<span>
+								<i class="fa-solid fa-code-compare"></i>
+							</span>
+						</div>
+					</div>
+					<div class="content-card-product">
+						<h3>Divino Niño</h3>
+						<span class="add-cart" data-id="1">
+							<i class="fa-solid fa-basket-shopping"></i>
+						</span>
+						<p class="price">$220.000</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+<section class="container blogs">
+				<h1 class="heading-1">Blogs</h1>
+
+				<div class="container-blogs">
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="../assets/blog-libro1.PNG" alt="Imagen Blog 1" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>San Pío de Pietrelcina el Padre Pío</h3>
+							<p>
+								El padre Pío es un personaje extraordinario cuya personalidad en el último siglo ha sido inmensa.
+                                El Padre Pío de Pietrelcina, nacido el 25 de mayo de 1887, muerto el 23 de septiembre de 1968.
+							</p>
+						</div>
+					</div>
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="../assets/blog-nove.PNG" alt="Imagen Blog 2" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>Novena Biblica de Aguinaldos</h3>
+							
+							<p>
+								Contiene las oraciones y lecturas bíblicas para la tradicional novena de aguinaldos que se celebra en preparación para la Navidad.Está diseñada para facilitar la lectura a personas con dificultades visuales. 
+							</p> 
+						</div>
+					</div>
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="../assets/blog-bibl.PNG" alt="Imagen Blog 3" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>Biblia de Nuestro Pueblo "Shcokel"</h3>
+							<p>
+								Lorem ipsum dolor sit amet consectetur adipisicing
+								elit. Iste, molestiae! Ratione et, dolore ipsum
+								quaerat iure illum reprehenderit non maxime amet dolor
+								voluptas facilis corporis, consequatur eius est sunt
+								suscipit?
+							</p>
+							
+						</div>
+                        <div class="btn-read-more">Leer más</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="footer">
+            <div class="container container-footer">
+                <div class="menu-footer">
+                    <div class="contact-info">
+                        <p class="title-footer">Información de Contacto</p>
+                        <ul>
+                            <li>Dirección: 71 Pennington Lane Vernon Rockville, CT 06066</li>
+                            <li>Teléfono: 123-456-7890</li>
+                            <li>Fax: 55555300</li>
+                            <li>Email: baristas@support.com</li>
+                        </ul>
+                        <div class="social-icons">
+                            <span class="facebook"><i class="fa-brands fa-facebook-f"></i></span>
+                            <span class="twitter"><i class="fa-brands fa-twitter"></i></span>
+                            <span class="youtube"><i class="fa-brands fa-youtube"></i></span>
+                            <span class="pinterest"><i class="fa-brands fa-pinterest-p"></i></span>
+                            <span class="instagram"><i class="fa-brands fa-instagram"></i></span>
+                        </div>
+                    </div>
+                    <div class="information">
+                        <p class="title-footer">Medios de Pago</p>
+                        <img src="../assets/payment.png" alt="Pagos" />
+                    </div>
+                </div> <!-- Cierre correcto de .menu-footer -->
+            </div> <!-- Cierre correcto de .container-footer -->
+        </footer>
+
+        <script>
+            const productTrack = document.querySelector('.carousel-product-track');
+            const nextBtn = document.querySelector('.carousel-product-wrapper .next');
+            const prevBtn = document.querySelector('.carousel-product-wrapper .prev');
+        
+            let position = 0;
+            const slideWidth = 270;
+        
+            nextBtn.addEventListener('click', () => {
+                const maxScroll = productTrack.scrollWidth - productTrack.clientWidth;
+                position = Math.min(position + slideWidth, maxScroll);
+                productTrack.scrollTo({ left: position, behavior: 'smooth' });
+            });
+        
+            prevBtn.addEventListener('click', () => {
+                position = Math.max(position - slideWidth, 0);
+                productTrack.scrollTo({ left: position, behavior: 'smooth' });
+            });
+        </script>
+<script>
+document.getElementById('finalize-purchase').addEventListener('click', async () => {
+    if (cart.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+    }
+
+    const selectedMethod = document.querySelector('input[name="payment-method"]:checked');
+    if (!selectedMethod) {
+        alert("Selecciona un método de pago.");
+        return;
+    }
+
+    const orderData = {
+        userId: 1, // Cambia esto según tu sistema de sesión
+        paymentMethod: selectedMethod.value,
+        cart: cart
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/api/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Compra registrada correctamente.");
+            cart = []; // Vaciar carrito
+            renderCart();
+        } else {
+            alert("Error al registrar la compra.");
+        }
+    } catch (error) {
+        console.error("Error al finalizar compra:", error);
+        alert("Error de conexión.");
+    }
+});
+</script>
+        
+		<script src="../frontend/js/panel-carrito.js"></script>
+		<script src="../router/CarritoRouter.js"></script>
+
+</body>
+
+</html>

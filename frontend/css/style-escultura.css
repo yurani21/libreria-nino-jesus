@@ -1,0 +1,182 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  header, .overlay{
+    background: transparent; /* Hace que el fondo sea visible */
+    background-color: #e05e5e;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  #libros-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .libro {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+  }
+  
+  .libro img {
+    width: 160px;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  
+  .libro h3 {
+    font-size: 14px;
+    color: #333;
+    text-align: justify;
+  }
+  
+  .libro p {
+    color: #666;
+  }
+  
+  #libros-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+  }
+  
+  /* Contenedor del catálogo */
+.grid-libros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+/* Tarjeta de cada libro */
+.libro-card {
+  width: 175px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Imagen con tamaño fijo */
+.libro-card img {
+  width: 160px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.btn-agregar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-agregar:hover {
+  background-color: #0056b3;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+.container-navbar {
+	background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.navbar {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+/* .navbar .fa-bars {
+	display: none;
+} */
+
+.menu {
+	display: flex;
+	gap: 20px;
+  list-style: none;
+}
+
+.menu li a{
+	text-decoration: none;
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    text-transform: uppercase;
+    position: relative;
+}
+
+/* Estilo para la barra de búsqueda */
+.search-form {
+	display: flex;
+	align-items: center;
+	border: 1px solid #585858;
+	border-radius: 2rem;
+	background-color: #fff;
+	height: 2.2rem;
+	overflow: hidden;
+  margin-left: 10%;
+}
+.search-form input {
+	outline: none;
+	font-family:'Times New Roman', Times, serif;
+	border: none;
+	width: 450%;
+	font-size: 16px;
+	padding: 5px 10px;
+	color: black;
+	cursor: pointer;
+}
+
+.search-form input::-webkit-search-cancel-button {
+	appearance: none;
+}
+
+.search-form .btn-search {
+	border: none;
+	background-color: var(--primary-color);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 1rem;
+}
+
+.btn-search i {
+	font-size: 2rem;
+	color: black;
+}
+
+.btn-agregar-carrito{
+  float: right;
+  margin-right: 10px;
+}

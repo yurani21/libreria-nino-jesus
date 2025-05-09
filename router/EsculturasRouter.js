@@ -12,10 +12,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+/* ---------- RUTAS PRINCIPALES ---------- */
+
 // Obtener todas las esculturas
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.promise().query('SELECT * FROM esculturas');
+    const [rows] = await pool.query('SELECT * FROM esculturas');
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener esculturas' });
@@ -79,6 +81,58 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Publicar escultura
+router.put("/publicar/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query("UPDATE esculturas SET publicado = TRUE WHERE Id_Escultura = ?", [id]);
+    const [result] = await pool.query("SELECT * FROM esculturas WHERE Id_Escultura = ?", [id]);
+    if (result.length === 0) return res.status(404).json({ error: "Escultura no encontrada" });
 
+    res.json({ message: "Escultura publicada correctamente", escultura: result[0] });
+  } catch (err) {
+    console.error("Error al publicar escultura:", err.message);
+    res.status(500).json({ error: "Error al publicar la escultura" });
+  }
+});
+
+// Alternar estado de publicación
+router.put('/publicar-ocultar/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [current] = await pool.query('SELECT publicado FROM esculturas WHERE Id_Escultura = ?', [id]);
+    if (current.length === 0) return res.status(404).json({ error: 'Escultura no encontrada' });
+
+    const nuevoEstado = !current[0].publicado;
+    await pool.query('UPDATE esculturas SET publicado = ? WHERE Id_Escultura = ?', [nuevoEstado, id]);
+
+    res.json({ message: `Escultura ${nuevoEstado ? 'publicada' : 'ocultada'} correctamente.` });
+  } catch (err) {
+    console.error('Error al alternar publicación:', err);
+    res.status(500).json({ error: 'Error al actualizar estado de publicación' });
+  }
+});
+
+// Esculturas publicadas
+router.get("/esculturas/catalogo", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM esculturas WHERE publicado = TRUE");
+    res.json(rows);
+  } catch (error) {
+    console.error("Error al obtener esculturas publicadas:", error);
+    res.status(500).json({ error: "Error del servidor" });
+  }
+});
+
+// Ruta de prueba de conexión a la base de datos
+router.get('/test-db', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT 1 + 1 AS resultado');
+    res.json({ ok: true, resultado: rows[0].resultado });
+  } catch (err) {
+    console.error('Error al conectar con la base de datos:', err);
+    res.status(500).json({ ok: false, error: 'Error de conexión con la base de datos' });
+  }
+});
 
 module.exports = router;
