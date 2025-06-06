@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12px; /* Reducir tamaño de letra */
+    margin: 10px;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  #product-list, #cart {
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 15px;
+    max-width: 400px; /* ancho reducido */
+  }
+
+  .product, .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+
+  .product button, .remove-btn {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  input[type="number"], input[type="text"] {
+    font-size: 11px;
+    padding: 2px 4px;
+    width: 60px;
+    margin-left: 5px;
+  }
+
+  .cart-total {
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  #payment-methods label {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  #new-card input {
+    width: 120px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+
+  #finalize-purchase {
+    font-size: 12px;
+    padding: 6px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .message {
+    margin-top: 10px;
+    font-size: 12px;
+    height: 18px;
+    color: green;
+  }
+
+  .message.error {
+    color: red;
+  }

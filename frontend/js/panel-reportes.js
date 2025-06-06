@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Función para mostrar el resumen de inventario de libros
 function mostrarResumenInventario() {
   fetch('http://localhost:3000/api/reportes/resumen-inventario')
@@ -367,5 +368,151 @@ async function cargarVentas() {
   }
 }
 
+=======
+document.addEventListener("DOMContentLoaded", () => {
+  // Mostrar sección al hacer clic en los enlaces
+  document.querySelectorAll('a[href="#detalles-inventario"]').forEach(link => {
+      link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          document.querySelectorAll(".section").forEach(s => s.classList.add("hidden"));
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) targetSection.classList.remove("hidden");
+      });
+  });
+
+  // Cargar resumen de inventario
+  document.querySelector('a[href="#detalles-inventario"]').addEventListener("click", cargarResumenInventario);
+});
+
+async function cargarResumenInventario() {
+  try {
+      const res = await fetch("http://localhost:3000/api/resumen-inventario");
+      const data = await res.json();
+
+      console.log('Datos de inventario:', data);  // Esto te muestra los datos que llegan
+
+      // Lista de libros más vendidos
+      const listaLibros = document.getElementById("masVendidos");
+      listaLibros.innerHTML = "";
+      data.masVendidos.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.nombre} (${item.cantidad} ventas)`;
+          listaLibros.appendChild(li);
+      });
+
+      // Lista de esculturas más vendidas
+      const listaEsculturas = document.getElementById("esculturasMasVendidas");
+      listaEsculturas.innerHTML = "";
+      data.esculturasVendidas.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.nombre} (${item.cantidad} ventas)`;
+          listaEsculturas.appendChild(li);
+      });
+
+  } catch (err) {
+      console.error("Error al obtener el resumen del inventario:", err);
+  }
+
+}
+
+// === GRÁFICO DE LIBROS/BIBLIAS/NOVENAS ===
+const librosData = {
+  labels: ["Libros", "Biblias", "Novenas"],
+  datasets: [{
+      label: "Cantidad Vendida",
+      data: [
+          data.masVendidos.find(p => p.nombre.includes("Libro"))?.cantidad || 0,
+          data.masVendidos.find(p => p.nombre.includes("Biblia"))?.cantidad || 0,
+          data.masVendidos.find(p => p.nombre.includes("Novena"))?.cantidad || 0
+      ],
+      backgroundColor: ["#6366F1", "#3B82F6", "#8B5CF6"]
+  }]
+};
+
+new Chart(document.getElementById("graficoLibros"), {
+  type: "bar",
+  data: librosData,
+  options: {
+      responsive: true,
+      plugins: {
+          legend: { display: false },
+          title: { display: true, text: "Ventas por Tipo de Libro" }
+      }
+  }
+});
+
+// === GRÁFICO DE ESCULTURAS ===
+const esculturasLabels = data.esculturasVendidas.map(item => item.nombre);
+const esculturasCantidades = data.esculturasVendidas.map(item => item.cantidad);
+
+new Chart(document.getElementById("graficoEsculturas"), {
+  type: "pie",
+  data: {
+      labels: esculturasLabels,
+      datasets: [{
+          label: "Ventas",
+          data: esculturasCantidades,
+          backgroundColor: ["#F59E0B", "#FBBF24", "#FCD34D"]
+      }]
+  },
+  options: {
+      responsive: true,
+      plugins: {
+          title: {
+              display: true,
+              text: "Esculturas más vendidas"
+          }
+      }
+  }
+});
+
+
+document.getElementById('filtrarFechas').addEventListener('click', function() {
+  const fechaInicio = document.getElementById('fechaInicio').value;
+  const fechaFin = document.getElementById('fechaFin').value;
+
+  if (fechaInicio && fechaFin) {
+      // Filtrar los datos según las fechas seleccionadas
+      const datosFiltrados = datos.filter(item => {
+          const fechaVenta = new Date(item.fecha);
+          return fechaVenta >= new Date(fechaInicio) && fechaVenta <= new Date(fechaFin);
+      });
+
+      // Actualizar los gráficos con los datos filtrados
+      actualizarGraficos(datosFiltrados);
+  } else {
+      alert('Por favor, seleccione un rango de fechas válido.');
+  }
+});
+
+function actualizarGraficos(datos) {
+  // Lógica para actualizar tus gráficos con los datos filtrados
+  // Ejemplo para un gráfico de barras:
+  const ctx = document.getElementById('graficoLibros').getContext('2d');
+  new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: datos.map(item => item.nombre),
+          datasets: [{
+              label: 'Ventas',
+              data: datos.map(item => item.cantidad),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              x: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+}
+
+>>>>>>> c80883a (Codigo Act)
 
 

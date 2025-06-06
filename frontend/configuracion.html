@@ -1,337 +1,609 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="./css/style config.css">
-  <title>Configuración</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Panel Admin</title>
+    <link href="../dist/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="../frontend/css/style config.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-  <!-- Panel lateral -->
-  <nav class="sidebar">
-    <div class="logo">
-      <h2>Panel Administrativo</h2>
+<style>
+  .hidden {
+  display: none;
+}
+
+</style>
+<body class="bg-gray-100">
+    <div class="bg-|"></div>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar bg-indigo-800 text-white w-64 flex flex-col">
+            <div class="p-4 flex items-center justify-between border-b border-indigo-700">
+                <div class="flex items-center">
+                    <i class="fas fa-cogs text-2xl sidebar-icon mr-3"></i>
+                    <span class="sidebar-text font-bold text-xl">Panel Admin</span>
+                </div>
+                <button id="toggle-sidebar" class="sidebar-icon text-gray-300 hover:text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="flex-1 p-4">
+                <ul>
+                    <li class="mb-2">
+                        <a href="../frontend/PanelAdministrativo.html" class="flex items-center p-2 rounded hover:bg-indigo-700">
+                            <i class="fas fa-box sidebar-icon mr-3"></i>
+                            <span class="sidebar-text">Inventario</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="../frontend/esculturas religiosas.html" class="flex items-center p-2 rounded hover:bg-indigo-700">
+                            <i class="fas fa-monument sidebar-icon mr-3"></i>
+                            <span class="sidebar-text">Esculturas</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 rounded hover:bg-indigo-700">
+                            <i class="fas fa-users sidebar-icon mr-3"></i>
+                            <span class="sidebar-text">Carrito_Compras</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+
+                        <a href="../frontend/reportes.html" class="flex items-center p-2 rounded bg-indigo-900">
+                            <i class="fas fa-chart-pie sidebar-icon mr-3"></i>
+                            <span class="sidebar-text">Reportes</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="../frontend/configuracion.html" class="flex items-center p-2 rounded bg-indigo-900">
+                            <i class="fas fa-cog sidebar-icon mr-3"></i>
+                            <span class="sidebar-text">Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-4 border-t border-indigo-700">
+                <a href="#" class="flex items-center p-2 rounded hover:bg-indigo-700">
+                    <i class="fas fa-sign-out-alt sidebar-icon mr-3"></i>
+                    <span class="sidebar-text">Cerrar sesión</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow p-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-800">Configuración del Sistema</h1>
+                    <div class="flex items-center space-x-4">
+                        <!-- User Info (optional) -->
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-6">
+
+ <!-- SECCIÓN DE CONFIGURACIONES -->
+ <div id="configuracion" class="section">
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+
+     <!-- Gestión de Seguridad -->
+<div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-all duration-300 card-hover">
+    <div class="flex items-center mb-4">
+        <div class="bg-red-100 p-3 rounded-full mr-4">
+            <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold">Seguridad y Contraseñas</h3>
     </div>
-    <ul class="menu">
-      <li><a href="../frontend/PanelAdministrativo.html">Inventario</a></li>
-      <li><a href="../frontend/esculturas religiosas.html">Esculturas</a></li>
-      <li><a href="#" onclick="showSection('clientes')">Clientes</a></li>
-      <li>
-        <a href="../frontend/reportes.html">Reportes</a>
-        <ul id="reportes-submenu" class="submenu" style="display: none;">
-          <li><a href="#" onclick="showSection('resumen-inventario')">Resumen Inventario</a></li>
-          <li><a href="#" onclick="showSection('movimientos')">Movimientos</a></li>
-          <li><a href="#" onclick="showSection('alertas')">Alertas</a></li>
-          <li><a href="#" onclick="showSection('ventas')">Ventas</a></li>
-        </ul>
-      </li>
-      <li><a href="../frontend/configuracion.html">Configuración</a></li>
-    </ul>
-  </nav>
+    <p class="text-gray-500 mb-4">Configura los requisitos y políticas de seguridad del sistema.</p>
+    <button onclick="mostrarSeccion('seguridad')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">
+        Gestionar Seguridad
+    </button>
+</div>
 
-  <!-- Contenido -->
-  <div class="main-content">
+ <!-- Gestión de Administradores -->
+         <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-all duration-300 card-hover">
+                   <div class="flex items-center mb-4">
+                         <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-users-cog text-indigo-600 text-xl"></i>
+                    </div>
+                  <h3 class="text-lg font-semibold">Gestión de Administradores</h3>
+                 </div>
+              <p class="text-gray-500 mb-4">Gestiona los permisos y roles de los administradores del sistema.</p>
+              <button onclick="mostrarSeccion('gestion-administradores');" id="btn-ver-admins" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">
+                Ver Administración
+                    </button>
+               </div>
 
-    <!-- Sección Configuración -->
-    <div id="configuracion" class="section">
-      <h2>Configuración del Sistema</h2>
-      <div class="config-container">
-
-        <div class="config-item">
-          <h3>👤 Gestión de Administradores</h3>
-          <p>Agregar, editar o eliminar cuentas de administradores.</p>
-          <button onclick="showSection('administrar-usuarios')">Administrar Usuarios</button>
+         <!-- Personalización del Sistema -->
+<div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-all duration-300 card-hover">
+    <div class="flex items-center mb-4">
+        <div class="bg-green-100 p-3 rounded-full mr-4">
+            <i class="fas fa-paint-brush text-green-600 text-xl"></i>
         </div>
-
-        <!-- Seguridad y Contraseñas -->
-        <div class="config-item seguridad-card">
-          <div class="seguridad-header">
-            <span class="seguridad-icon">🔒</span>
-            <h3 class="seguridad-titulo">Seguridad y Contraseñas</h3>
-          </div>
-          <p class="seguridad-descripcion">
-            Cambiar contraseñas, activar verificación y otras medidas de seguridad.
-          </p>
-          <button id="btnGestionarSeguridad" class="btn-seguridad">Gestionar Seguridad</button>
-        </div>
-
-        <div class="config-item">
-          <h3>🛠️ Personalización del Sistema</h3>
-          <p>Modificar temas, idioma, notificaciones y apariencia general.</p>
-          <button onclick="alert('Función en construcción')">Personalizar</button>
-        </div>
-
-        <div class="config-item">
-          <h3>📤 Respaldos y Exportaciones</h3>
-          <p>Exportar datos a Excel o PDF, hacer copias de seguridad del sistema.</p>
-          <button onclick="alert('Función en construcción')">Exportar / Respaldar</button>
-        </div>
-
-      </div>
+        <h3 class="text-lg font-semibold">Personalización del Sistema</h3>
     </div>
-
-    <!-- Seguridad -->
-<div id="seccion-seguridad" class="section" style="display: none;">
-  <h2>🔐 Seguridad y Contraseñas</h2>
-  <!-- Verificación (movida aquí) -->
-  <div class="verificacion-container">
-    <h3>Activar Verificación</h3>
-  
-    <div class="verificacion-card">
-      <div class="verificacion-info">
-        <label for="adminSelect">Selecciona un administrador:</label>
-        <select id="adminSelect">
-          <option value="">Cargando administradores...</option>
-        </select>
-      </div>
-  
-      <div class="verificacion-form">
-        <label for="newPassword">Nueva Contraseña:</label>
-        <input type="password" id="newPassword" placeholder="Ingresa la nueva contraseña" />
-  
-        <button onclick="actualizarPassword()">Actualizar Contraseña</button>
-      </div>
-    </div>
-  </div>
-  
-
-
+    <p class="text-gray-500 mb-4">Personaliza la apariencia del sistema, temas y configuraciones visuales.</p>
+    <button onclick="mostrarSeccion('personalizacion')" id="btn-ver-personalizacion" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">Ver Personalización</button>
    
-    <!-- Administrar Usuarios -->
-    <div id="administrar-usuarios" class="section" style="display: none;">
-      <h2>Administradores</h2>
-      <div class="admin-form-container">
-        <center><h3>Editar Administrador</h3></center>
-        <form class="admin-form">
-          <div class="form-group"><label>Nombre</label><input type="text" placeholder="Nombre" /></div>
-          <div class="form-group"><label>Apellidos</label><input type="text" placeholder="Apellidos" /></div>
-          <div class="form-group"><label>Teléfono</label><input type="text" placeholder="Teléfono" /></div>
-          <div class="form-group"><label>Correo</label><input type="email" placeholder="Correo" /></div>
-          <div class="form-group"><label>Contraseña</label><input type="password" placeholder="Contraseña" /></div>
-          <div class="form-group"><label>Dirección</label><input type="text" placeholder="Dirección" /></div>
-          <div class="form-buttons">
-            <button type="submit">Guardar</button>
-            <button type="reset" class="cancel-btn">Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </div>
+</div>
 
-    <!-- Seguridad -->
-    <div id="seccion-seguridad" class="section" style="display: none;">
-      <h2>🔐 Seguridad y Contraseñas</h2>
-      <form id="formCambiarPassword">
-        <label for="correoSelect">Selecciona un correo:</label>
-        <select id="correoSelect" required></select>
-        <label for="nuevaPassword">Nueva Contraseña:</label>
-        <input type="password" id="nuevaPassword" required>
-        <center><button type="submit">Actualizar Contraseña</button></center>
-      </form>
-      
-    </div>
-
-    <!-- Alertas -->
-    <div id="alertas" class="section" style="display: none;">
-      <h2>Alertas de Inventario</h2>
-      <div class="alertas-container">
-        <div class="alert-card alert-stock-bajo">
-          <h3>Stock Bajo</h3>
-          <p>📦 Biblia Reina Valera - Solo quedan 3 unidades.</p>
-        </div>
-        <div class="alert-card alert-agotado">
-          <h3>Producto Agotado</h3>
-          <p>🚫 Escultura de San Miguel - Sin unidades disponibles.</p>
-        </div>
-        <div class="alert-card alert-exceso">
-          <h3>Exceso de Stock</h3>
-          <p>⚠️ Novena de San Judas - 100 unidades sin rotación.</p>
-        </div>
-        <div class="alert-card alert-error">
-          <h3>Error de Movimiento</h3>
-          <p>🚨 Salida registrada para producto inexistente.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  
+           <!-- Respaldos y Exportaciones -->
+    <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-all duration-300 card-hover">
+            <div class="flex items-center mb-4">
+                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                     <i class="fas fa-database text-blue-600 text-xl"></i>
+                     </div>
+                 <h3 class="text-lg font-semibold">Respaldos y Exportaciones</h3>
+              </div>
+                  <p class="text-gray-500 mb-4">Realiza respaldos de la base de datos y exporta información.</p>
+                 <button onclick="mostrarSeccion('respaldos')" id="btn-ver-respaldos" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">Ver Respaldos</button>            
+ </div>
+                    </div>
+                </div>
 
 
-  <!-- Scripts -->
-  <script>
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-      const section = document.getElementById(sectionId);
-      if (section) section.style.display = 'block';
-    }
+<!-- Nueva sección para ajustes adicionales -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+         <!-- Forma de pago -->
+         <div class="bg-white rounded-lg shadow p-6">
+     <h2 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-credit-card text-indigo-600 mr-2"></i> Métodos de Pago</h2>
+                <div class="space-y-4">
+                   <div class="flex items-center space-x-3">
+                       <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" checked>
+             <span class="text-sm">Habilitar pagos con tarjeta</span>
+              </div>
+         <div class="flex items-center space-x-3">
+        <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" checked>
+                    <span class="text-sm">Habilitar PayPal</span>
+                            </div>
+                        </div>
+                    </div>
 
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
-    }
+                    <!-- Cambiar idioma -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-language text-amber-600 mr-2"></i> Idioma
+                        </h2>
+                        <div class="space-y-4">
+                            <select class="form-select block w-full mt-1 px-4 py-2 border rounded-md">
+                                <option>Español</option>
+                                <option>Inglés</option>
+                                <option>Francés</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-    window.onload = () => {
-      showSection('configuracion');
-    };
 
-    document.getElementById("btnGestionarSeguridad").addEventListener("click", function () {
-      showSection("seccion-seguridad");
-    });
-
-    document.getElementById("formCambioPassword").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const actual = document.getElementById("actualPassword").value;
-      const nueva = document.getElementById("nuevaPassword").value;
-      const confirmar = document.getElementById("confirmarPassword").value;
-      if (nueva !== confirmar) {
-        alert("Las contraseñas no coinciden.");
-        return;
-      }
-      alert("Contraseña cambiada correctamente (simulado)");
-      this.reset();
-    });
-  
-  document.querySelector(".admin-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = {
-      nombre: form[0].value,
-      apellidos: form[1].value,
-      telefono: form[2].value,
-      correo: form[3].value,
-      password: form[4].value,
-      direccion: form[5].value,
-    };
-  
-    fetch("http://localhost:3000/api/administradores", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(response => {
-      alert(response.message || "Usuario creado");
-      form.reset();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error al crear usuario");
-    });
-  });
-  
-  document.getElementById("formCambioPassword").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const actual = document.getElementById("actualPassword").value;
-    const nueva = document.getElementById("nuevaPassword").value;
-    const confirmar = document.getElementById("confirmarPassword").value;
-    const correo = prompt("Ingresa tu correo para confirmar:");
-  
-    if (nueva !== confirmar) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-  
-    fetch("http://localhost:3000/api/administradores/cambiar-password", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo, actualPassword: actual, nuevaPassword: nueva })
-    })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message || data.error);
-      if (data.message) e.target.reset();
-    })
-    .catch(err => alert("Error al cambiar contraseña"));
-  });
-
-  // Cargar correos al iniciar
-fetch("http://localhost:3000/api/administradores/correos")
-  .then(res => res.json())
-  .then(data => {
-    const select = document.getElementById("correoSelect");
-    data.forEach(admin => {
-      const option = document.createElement("option");
-      option.value = admin.id;
-      option.textContent = admin.correo;
-      select.appendChild(option);
-    });
-  });
-
-// Cambiar contraseña
-document.getElementById("formCambiarPassword").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const userId = document.getElementById("correoSelect").value;
-  const nuevaPassword = document.getElementById("nuevaPassword").value;
-
-  const res = await fetch(`http://localhost:3000/api/administradores/actualizar-password/${userId}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nuevaPassword })
-  });
-
-  const result = await res.json();
-  alert(result.mensaje || result.error);
-});
-
-  </script>
-
-<script>
-  // Cargar administradores al cargar la página
-  window.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:3000/api/administradores/correos")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("adminSelect");
-        select.innerHTML = `<option value="">Selecciona un administrador</option>`;
-        data.forEach(admin => {
-          const option = document.createElement("option");
-          option.value = admin.id;
-          option.textContent = admin.correo;
-          select.appendChild(option);
-        });
-      })
-      .catch(err => {
-        console.error("Error al cargar administradores:", err);
-        alert("Error al obtener la lista de correos.");
-      });
-  });
-
-  // Función para actualizar la contraseña
-  function actualizarPassword() {
-    const id = document.getElementById("adminSelect").value;
-    const nuevaPassword = document.getElementById("newPassword").value;
-
-    if (!id || !nuevaPassword) {
-      return alert("Por favor selecciona un administrador e ingresa una nueva contraseña.");
-    }
-
-    fetch(`http://localhost:3000/api/administradores/actualizar-password/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nuevaPassword })
-    })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.mensaje || "Contraseña actualizada con éxito");
-      document.getElementById("newPassword").value = "";
-    })
-    .catch(err => {
-      console.error("Error actualizando contraseña:", err);
-      alert("Error al actualizar la contraseña");
-    });
-  }
-</script>
-
-  
-  
-<!-- Botón de Iniciar Sesión -->
-
-<div class="login-bottom-right">
-  <button class="login-button" onclick="window.location.href='login.html'">
-    Iniciar Sesión
+    <!-- Sección Seguridad y Contraseñas -->
+<section id="seguridad" class="hidden">
+  <!-- Botón para volver a configuración -->
+<div class="mt-6">
+  <button onclick="volverAConfiguracion()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+    Volver a Configuración
   </button>
 </div>
 
+  <h2 class="text-xl font-bold mb-4">Gestión de Seguridad</h2>
 
+  <table id="tabla-seguridad-admins" class="w-full mb-6 border">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="py-2 px-4">Nombre</th>
+        <th class="py-2 px-4">Correo</th>
+        <th class="py-2 px-4">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se cargan los administradores -->
+    </tbody>
+  </table>
+
+  <!-- Formulario para cambiar contraseña -->
+  <form id="form-cambiar-contrasena" class="hidden bg-gray-100 p-4 rounded">
+    <h3 class="text-lg font-semibold mb-2">Cambiar Contraseña</h3>
+    <p id="adminIdDisplay" class="mb-2 text-sm text-gray-600"></p>
+
+    <div class="mb-3">
+      <label for="nuevaContrasena" class="block font-medium">Nueva contraseña</label>
+      <input type="password" id="nuevaContrasena" required minlength="6" class="w-full border rounded px-2 py-1" />
+    </div>
+
+    <div class="mb-3">
+      <label for="confirmarContrasena" class="block font-medium">Confirmar contraseña</label>
+      <input type="password" id="confirmarContrasena" required minlength="6" class="w-full border rounded px-2 py-1" />
+    </div>
+
+    <div class="flex gap-2">
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Actualizar</button>
+      <button type="button" id="btn-cancelar-cambio" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</button>
+    </div>
+  </form>
+</section>
+
+            
+
+                <!-- Sección de personalización (inicialmente oculta) -->
+                <div id="personalizacion" class="hidden">
+
+                    <button id="btnVolverConfig" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                        ← Volver a Configuración
+                    </button>
+                    <h3>Opciones de Personalización</h3>
+                    <div id="funciones-personalizacion" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Aquí se mostrarán las opciones dinámicamente -->
+                    </div> 
+                </div>
+
+                <!-- Contenedor de Gestión de Administradores -->
+                <div id="gestion-administradores" class="hidden bg-white rounded-lg shadow p-6 mt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Administradores del Sistema</h2>
+                        <button onclick="mostrarSeccion('configuracion')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                            ← Volver a Configuracion</button>
+                    </div>
+                    <table id="tabla-administradores" class="w-full text-left table-auto border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="border-b py-2 px-4">Nombre</th>
+                                <th class="border-b py-2 px-4">Apellidos</th>
+                                <th class="border-b py-2 px-4">Teléfono</th>
+                                <th class="border-b py-2 px-4">Correo</th>
+                                <th class="border-b py-2 px-4">Dirección</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí se cargará la lista -->
+                        </tbody>
+                    </table>
+                </div>
+
+        <div id="form-edicion-admin" class="hidden bg-white p-6 rounded-lg shadow mt-6">
+                    <h2 class="text-xl font-semibold mb-4">Editar Administrador</h2>
+                    <form id="form-editar-admin" class="space-y-4">
+                        <input type="hidden" id="adminId">
+                        <div>      
+                    <label for="editar-nombre" class="block text-sm font-medium">Nombre</label>
+                    <input type="text" id="editar-nombre" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="editar-apellidos" class="block text-sm font-medium">Apellidos</label>
+                            <input type="text" id="editar-apellidos" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="editar-telefono" class="block text-sm font-medium">Teléfono</label>
+                            <input type="text" id="editar-telefono" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="editar-correo" class="block text-sm font-medium">Correo</label>
+                            <input type="email" id="editar-correo" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="editar-direccion" class="block text-sm font-medium">Dirección</label>
+                            <input type="text" id="editar-direccion" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="flex space-x-4">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded ">Guardar Cambios</button>
+                            <button type="button" onclick="cancelarEdicion()" class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="respaldos" class="hidden bg-white p-6 rounded-lg shadow mt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Respaldos y Exportaciones</h2>
+                        <button onclick="mostrarSeccion('configuracion')" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                            ← Volver a Configuración
+                        </button>
+                    </div>
+                    <p class="mb-4 text-gray-600">Puedes descargar un respaldo de la base de datos haciendo clic en el botón de abajo:</p>
+                    <button id="btn-generar-respaldo
+                    
+                    " class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        Generar y Descargar Respaldo
+                    </button>
+                </div>
+                
+<!-- Seguridad y Contraseñas (SECCIÓN INDEPENDIENTE) -->
+<div id="seguridad" class="hidden bg-white p-6 rounded-lg shadow mt-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Configuración de Seguridad y Contraseñas</h2>
+        <button onclick="mostrarSeccion('configuracion')"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+            ← Volver a Configuración
+        </button>
+    </div>
+    <form id="form-cambiar-politica" class="space-y-4">
+        <div class="mb-4">
+            <label for="input-longitud" class="block text-sm font-medium">Longitud mínima de la contraseña</label>
+            <input type="number" id="input-longitud" class="w-full border rounded px-3 py-2" min="6" value="8">
+        </div>
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" id="input-requiere-especial" class="form-checkbox h-5 w-5 text-red-600">
+            <label for="input-requiere-especial" class="text-sm">Requiere caracteres especiales</label>
+        </div>
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" id="input-requiere-mayusculas" class="form-checkbox h-5 w-5 text-red-600">
+            <label for="input-requiere-mayusculas" class="text-sm">Requiere mayúsculas</label>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Cambios</button>
+    </form>
+    <div class="mt-6">
+        <h3 class="font-semibold">Política Actual:</h3>
+        <p id="política-contraseña">Longitud mínima de contraseña: 8</p>
+        <p id="política-especial">Requiere caracteres especiales: No</p>
+        <p id="política-mayusculas">Requiere mayúsculas: No</p>
+    </div>
+</div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Sección de Personalización -->
+<div id="personalizacion" class="hidden p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Personalización del Sistema</h2>
+  
+    <div class="grid md:grid-cols-2 gap-6">
+  
+      <!-- Bloques de opciones -->
+      <div class="bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-lg font-semibold">Apariencia del Inventario</h3>
+        <p class="text-gray-600 text-sm">Configura colores, vistas y estilos del inventario.</p>
+        <button onclick="mostrarSubSeccion('apariencia')" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ejecutar</button>
+      </div>
+  
+      <div class="bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-lg font-semibold">Tienda Online</h3>
+        <p class="text-gray-600 text-sm">Personaliza el diseño y contenido público de la tienda.</p>
+        <button onclick="mostrarTienda()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ejecutar</button>
+      </div>
+  
+      <div class="bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-lg font-semibold">Marca y Logo</h3>
+        <p class="text-gray-600 text-sm">Sube el logotipo y define la identidad visual.</p>
+        <button onclick="mostrarSubSeccion('marca')" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ejecutar</button>
+      </div>
+  
+      <div class="bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-lg font-semibold">Idioma</h3>
+        <p class="text-gray-600 text-sm">Selecciona el idioma del sistema.</p>
+        <button onclick="mostrarSubSeccion('idioma')" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ejecutar</button>
+      </div>
+  
+      <div class="bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-lg font-semibold">Localización</h3>
+        <p class="text-gray-600 text-sm">Ajusta la zona horaria y región.</p>
+        <button onclick="mostrarSubSeccion('localizacion')" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ejecutar</button>
+      </div>
+    </div>
+  
+    <!-- Sub-secciones de configuración (ocultas hasta hacer clic en Ejecutar) -->
+  
+    <!-- Personalización del Panel -->
+<div class="p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Configuración de Personalización</h2>
+  
+    <!-- Botones de opciones -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <button onclick="mostrarSeccion('config-apariencia')" class="bg-blue-500 text-white py-2 px-4 rounded">Configurar Apariencia del Inventario</button>
+      <button onclick="mostrarSeccion('config-tienda')" class="bg-blue-500 text-white py-2 px-4 rounded">Personalizar Tienda Online</button>
+      <button onclick="mostrarSeccion('config-marca')" class="bg-blue-500 text-white py-2 px-4 rounded">Subir Logo / Marca</button>
+      <button onclick="mostrarSeccion('config-idioma')" class="bg-blue-500 text-white py-2 px-4 rounded">Idioma y Localización</button>
+    </div>
+  
+    <!-- Sección Apariencia del Inventario -->
+    <div id="config-apariencia" class="hidden">
+      <h4 class="text-xl font-bold mb-4">Apariencia del Inventario</h4>
+      <form id="formApariencia" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Estilo de Visualización</label>
+          <select id="estiloVista" class="w-full border rounded p-2">
+            <option value="tabla">Tabla</option>
+            <option value="tarjetas">Tarjetas</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Productos por Página</label>
+          <input type="number" id="productosPagina" min="5" max="100" value="20" class="w-full border rounded p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Columnas Visibles</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" checked value="imagen" /> Imagen</label>
+            <label><input type="checkbox" checked value="categoria" /> Categoría</label>
+            <label><input type="checkbox" checked value="precio" /> Precio</label>
+            <label><input type="checkbox" checked value="stock" /> Stock</label>
+            <label><input type="checkbox" checked value="codigo" /> Código</label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Tamaño de Fuente</label>
+          <select id="tamanoFuente" class="w-full border rounded p-2">
+            <option value="sm">Pequeña</option>
+            <option value="md" selected>Mediana</option>
+            <option value="lg">Grande</option>
+          </select>
+        </div>
+        <div>
+          <label><input type="checkbox" id="modoCompacto" /> Activar modo compacto</label>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Preferencias</button>
+      </form>
+    </div>
+  
+    <!-- Sección Marca y Logo -->
+    <div id="config-marca" class="hidden mt-6">
+      <h4 class="text-xl font-bold mb-4">Marca y Logo</h4>
+      <form id="formMarca" class="space-y-4" enctype="multipart/form-data">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Nombre de la Marca</label>
+          <input type="text" id="nombreMarca" name="nombre" class="w-full border rounded p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Slogan</label>
+          <input type="text" id="sloganMarca" name="slogan" class="w-full border rounded p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Logo Principal</label>
+          <input type="file" id="logoPrincipal" name="logo" accept="image/*" class="w-full p-2 border rounded">
+          <img id="previewLogo" class="mt-4 h-20" style="display:none;" />
+
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Favicon</label>
+          <input type="file" id="faviconMarca" name="favicon" accept="image/x-icon,image/png" class="w-full p-2 border rounded">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Color Primario</label>
+            <input type="color" id="colorPrimario" name="color_primario" class="w-full h-10 border rounded">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Color Secundario</label>
+            <input type="color" id="colorSecundario" name="color_secundario" class="w-full h-10 border rounded">
+          </div>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Cambios</button>
+      </form>
+    </div>
+  
+    <!-- Sección Personalizar Tienda Online -->
+    <div id="configuracionTienda" class="hidden">
+      <h4 class="text-xl font-bold mb-4">Personalizar Tienda Online</h4>
+      <form id="formTienda" class="space-y-4">
+        <div>
+          <label class="block mb-2">Texto de Bienvenida</label>
+          <input type="text" id="textoBienvenida" type="text" class="border p-2 w-full">
+        </div>
+        <div>
+          <label class="block mb-2">Mostrar Banners Promocionales</label>
+          <select id="mostrarBanners" type="text" class="border p-2 w-full">
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-2">Colores del Sitio</label>
+          <div class="border p-2 w-full">
+            <input type="color" id="colorFondo" title="Fondo">
+            <input type="color" id="colorTexto" title="Texto">
+          </div>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Personalización</button>
+      </form>
+    </div>
+  
+    <!-- Sección Idioma y Localización -->
+    <div id="config-idioma" class="hidden mt-6">
+      <h4 class="text-xl font-bold mb-4">Idioma y Localización</h4>
+      <form id="formIdioma" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Seleccionar Idioma</label>
+          <select id="idiomaSitio" class="w-full border rounded p-2">
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+            <option value="fr">Francés</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Zona Horaria</label>
+          <select id="zonaHoraria" class="w-full border rounded p-2">
+            <option value="America/Bogota">Bogotá</option>
+            <option value="America/Mexico_City">Ciudad de México</option>
+            <option value="Europe/Madrid">Madrid</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Moneda</label>
+          <select id="monedaSitio" class="w-full border rounded p-2">
+            <option value="COP">Peso colombiano (COP)</option>
+            <option value="MXN">Peso mexicano (MXN)</option>
+            <option value="EUR">Euro (EUR)</option>
+            <option value="USD">Dólar estadounidense (USD)</option>
+          </select>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Función para mostrar la vista previa del logo
+    const logoInput = document.getElementById('logoPrincipal');
+    const previewLogo = document.getElementById('previewLogo');
+    logoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          previewLogo.src = reader.result;
+          previewLogo.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  
+    // Función para manejar el envío del formulario de marca
+    const formMarca = document.getElementById('formMarca');
+    formMarca.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(formMarca);
+      try {
+        const res = await fetch('/api/personalizacion/marca', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await res.json();
+        alert(result.mensaje);
+      } catch (error) {
+        console.error('Error al enviar los datos:', error);
+        alert('Hubo un problema al guardar los cambios.');
+      }
+    });
+  
+    
+  
+    // Función para manejar el envío del formulario de idioma
+    const formIdioma = document.getElementById('formIdioma');
+    formIdioma.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const config = {
+        idioma: document.getElementById('idiomaSitio').value,
+        zona: document.getElementById('zonaHoraria').value,
+        moneda: document.getElementById('monedaSitio').value,
+      };
+      try {
+        const res = await fetch('/api/personalizacion/idioma', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config),
+        });
+        const result = await res.json();
+        alert(result.mensaje);
+      } catch (error) {
+        console.error('Error al enviar los datos:', error);
+        alert('Hubo un problema al guardar los cambios.');
+      }
+    });
+  });
+</script>  
+  
+
+
+    
+
+    
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+    });
+  </script>
+    <script src="../frontend/js/panel-configuracion.js"></script>
 </body>
 </html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Carrito de Compras - Librería</title>
+<link rel="stylesheet" href="../frontend/css/style carritocomp.css">
+</head>
+<body>
+
+<h1>Carrito de Compras - Librería Iglesia</h1>
+
+<section id="product-list">
+  <h2>Productos Disponibles</h2>
+  <div id="products"></div>
+</section>
+
+<section id="cart">
+  <h2>Tu Carrito</h2>
+  <div id="cart-items"></div>
+  <div class="cart-total" id="cart-total"></div>
+
+  <div id="payment-methods">
+    <h3>Método de Pago</h3>
+    <label><input type="radio" name="payment-method" value="tarjeta" checked> Tarjeta de Crédito/Débito</label>
+    <label><input type="radio" name="payment-method" value="efectivo"> Efectivo</label>
+
+    <div id="new-card">
+      <h4>Agregar Nueva Tarjeta</h4>
+      <input type="text" id="card-number" placeholder="Número de tarjeta" maxlength="16" />
+      <input type="text" id="card-name" placeholder="Nombre en la tarjeta" />
+      <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" />
+      <input type="text" id="card-cvc" placeholder="CVC" maxlength="3" />
+    </div>
+  </div>
+
+  <button id="finalize-purchase">Finalizar Compra</button>
+  <div class="message" id="message"></div>
+</section>
+
+<script>
+  // Variables
+  let cart = [];
+  let products = [];
+
+  // Función para obtener productos del backend
+  async function fetchProducts() {
+    try {
+      const res = await fetch('/api/products');
+      products = await res.json();
+      renderProducts();
+    } catch (err) {
+      alert('Error al cargar productos.');
+      console.error(err);
+    }
+  }
+
+  // Mostrar productos en #products
+  function renderProducts() {
+    const container = document.getElementById('products');
+    container.innerHTML = '';
+    if (products.length === 0) {
+      container.innerHTML = '<p>No hay productos disponibles.</p>';
+      return;
+    }
+    products.forEach(p => {
+      const div = document.createElement('div');
+      div.classList.add('product');
+      div.innerHTML = `
+        <span class="product-name">${p.nombre}</span>
+        <span class="product-type">${p.tipo}</span>
+        <span class="product-price">$${p.precio.toFixed(2)}</span>
+        <button data-id="${p.id}">Agregar al carrito</button>
+      `;
+      container.appendChild(div);
+    });
+
+    // Agregar evento para botón agregar
+    container.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.getAttribute('data-id'));
+        addToCart(id);
+      });
+    });
+  }
+
+  // Obtener carrito del backend
+  async function fetchCart() {
+    try {
+      const res = await fetch('/api/cart');
+      cart = await res.json();
+      renderCart();
+    } catch (err) {
+      alert('Error al cargar el carrito.');
+      console.error(err);
+    }
+  }
+
+  // Mostrar carrito en #cart-items
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    if (cart.length === 0) {
+      container.innerHTML = '<p>Tu carrito está vacío.</p>';
+      document.getElementById('cart-total').textContent = '';
+      return;
+    }
+
+    let total = 0;
+    cart.forEach(item => {
+      total += item.Cantidad * item.Precio;
+
+      const div = document.createElement('div');
+      div.classList.add('cart-item');
+      div.innerHTML = `
+        <span class="cart-item-name">${item.nombre} (${item.tipo})</span>
+        <input type="number" min="1" value="${item.Cantidad}" data-id="${item.Id_CarritoDetalle}" class="cart-qty" />
+        <span class="cart-item-price">$${(item.Cantidad * item.Precio).toFixed(2)}</span>
+        <button data-id="${item.Id_CarritoDetalle}" class="remove-btn">Eliminar</button>
+      `;
+      container.appendChild(div);
+    });
+    document.getElementById('cart-total').textContent = `Total: $${total.toFixed(2)}`;
+
+    // Eventos para eliminar
+    container.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        removeFromCart(id);
+      });
+    });
+
+    // Eventos para actualizar cantidad
+    container.querySelectorAll('.cart-qty').forEach(input => {
+      input.addEventListener('change', (e) => {
+        let qty = parseInt(e.target.value);
+        if (isNaN(qty) || qty < 1) qty = 1;
+        const id = e.target.getAttribute('data-id');
+        updateCartQty(id, qty);
+      });
+    });
+  }
+
+  // Añadir producto al carrito
+  async function addToCart(productId) {
+    try {
+      const res = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ producto_id: productId, cantidad: 1 })
+      });
+      const data = await res.json();
+      if (data.success) {
+        await fetchCart();
+        showMessage('Producto agregado al carrito.');
+      } else {
+        showMessage('Error al agregar producto.', true);
+      }
+    } catch (err) {
+      showMessage('Error en la conexión.', true);
+      console.error(err);
+    }
+  }
+
+  // Eliminar producto del carrito
+  async function removeFromCart(itemId) {
+    try {
+      const res = await fetch(`/api/cart/remove/${itemId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        await fetchCart();
+        showMessage('Producto eliminado.');
+      } else {
+        showMessage('Error al eliminar producto.', true);
+      }
+    } catch (err) {
+      showMessage('Error en la conexión.', true);
+      console.error(err);
+    }
+  }
+
+  // Actualizar cantidad del carrito
+  async function updateCartQty(itemId, cantidad) {
+    try {
+      const res = await fetch(`/api/cart/update/${itemId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cantidad })
+      });
+      const data = await res.json();
+      if (data.success) {
+        await fetchCart();
+        showMessage('Cantidad actualizada.');
+      } else {
+        showMessage('Error al actualizar cantidad.', true);
+      }
+    } catch (err) {
+      showMessage('Error en la conexión.', true);
+      console.error(err);
+    }
+  }
+
+  // Finalizar compra
+  async function finalizePurchase() {
+    const selectedMethod = document.querySelector('input[name="payment-method"]:checked');
+    if (!selectedMethod) {
+      showMessage('Selecciona un método de pago.', true);
+      return;
+    }
+
+    // Obtener datos de tarjeta solo si método es tarjeta
+    let cardData = null;
+    if (selectedMethod.value === 'tarjeta') {
+      const cardNumber = document.getElementById('card-number').value.trim();
+      const cardName = document.getElementById('card-name').value.trim();
+      const cardExpiry = document.getElementById('card-expiry').value.trim();
+      const cardCVC = document.getElementById('card-cvc').value.trim();
+
+      if (!cardNumber || !cardName || !cardExpiry || !cardCVC) {
+        showMessage('Completa todos los datos de la tarjeta.', true);
+        return;
+      }
+      cardData = { cardNumber, cardName, cardExpiry, cardCVC };
+    }
+
+    if (cart.length === 0) {
+      showMessage('Tu carrito está vacío.', true);
+      return;
+    }
+
+    // Enviar pedido al backend
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentMethod: selectedMethod.value,
+          cardData: cardData,
+          cart: cart
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showMessage('Compra registrada correctamente.');
+        await fetchCart(); // refrescar carrito vacío
+        clearCardForm();
+      } else {
+        showMessage('Error al registrar la compra.', true);
+      }
+    } catch (err) {
+      showMessage('Error de conexión.', true);
+      console.error(err);
+    }
+  }
+
+  // Mostrar mensajes
+  function showMessage(msg, isError = false) {
+    const div = document.getElementById('message');
+    div.textContent = msg;
+    div.className = isError ? 'message error' : 'message';
+    setTimeout(() => { div.textContent = ''; div.className = 'message'; }, 4000);
+  }
+
+  // Limpiar formulario tarjeta
+  function clearCardForm() {
+    document.getElementById('card-number').value = '';
+    document.getElementById('card-name').value = '';
+    document.getElementById('card-expiry').value = '';
+    document.getElementById('card-cvc').value = '';
+  }
+
+  // Inicializar
+  document.getElementById('finalize-purchase').addEventListener('click', finalizePurchase);
+
+  // Cambiar visibilidad de formulario tarjeta según método
+  document.querySelectorAll('input[name="payment-method"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const newCardDiv = document.getElementById('new-card');
+      newCardDiv.style.display = (input.value === 'tarjeta') ? 'block' : 'none';
+    });
+  });
+
+  // Mostrar u ocultar formulario al inicio
+  document.getElementById('new-card').style.display = 'block';
+
+  // Cargar datos iniciales
+  fetchProducts();
+  fetchCart();
+</script>
+
+</body>
+</html>

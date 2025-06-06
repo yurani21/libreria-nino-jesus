@@ -30,6 +30,7 @@ async function mostrarEsculturas() {
 // Editar o crear escultura
 async function guardarEscultura() {
   const id = document.getElementById("idEscultura").value.trim();
+<<<<<<< HEAD
 
   const codigo = document.getElementById('codigo').value.trim();
   const nombre = document.getElementById('nombre').value.trim();
@@ -41,6 +42,18 @@ async function guardarEscultura() {
   // Validación
   if (!codigo || !nombre || !precio || !pulgadas || stock === "" || (!imagen && !id)) {
     alert('Por favor, complete todos los campos. La imagen es obligatoria si está creando una nueva escultura.');
+=======
+  const codigo = document.getElementById('codigo').value.trim();
+  const nombre = document.getElementById('nombre').value.trim();
+  const precio = document.getElementById('precio').value.trim();
+  const pulgadas = document.getElementById('pulgadas').value.trim();
+  const stock = document.getElementById('stock').value.trim();
+  const imagen = document.getElementById('imagen').files[0];
+
+  // Validación
+  if (!codigo || !nombre || !precio || !pulgadas || stock === "") {
+    alert('Por favor, complete todos los campos.');
+>>>>>>> c80883a (Codigo Act)
     return;
   }
 
@@ -147,23 +160,49 @@ function buscarEsculturas() {
 
   filas.forEach(fila => {
     const codigo = fila.children[1].innerText.toLowerCase();
-    if(codigo.includes(filtro)){
+    const nombre = fila.children[2].innerText.toLowerCase();
+
+    // Mostrar filas que coincidan con el código o el nombre
+    if (codigo.includes(filtro) || nombre.includes(filtro)) {
         fila.style.display = "";
-    }else{
-        fila.style.display = nombre.includes(filtro) ? "" : "none";
+    } else {
+        fila.style.display = "none";
     }
   });
 }
 
-function filtrarEsculturas(){
-    const filtro = document.getElementById("filtro")
+
+function filtrarEsculturas() {
+  const filtroPrecio = document.getElementById("filtroPrecio").value;
+  const filtroStock = document.getElementById("filtroStock").value;
+
+  const filas = document.querySelectorAll("#tablaEsculturas tr");
+
+  filas.forEach(fila => {
+    const precio = parseInt(fila.children[3].innerText);  // Precio en la columna 3
+    const stock = parseInt(fila.children[6].innerText);  // Stock en la columna 6
+
+    let mostrar = true;
+
+    if (filtroPrecio && precio < parseInt(filtroPrecio)) {
+      mostrar = false;
+    }
+
+    if (filtroStock && stock < parseInt(filtroStock)) {
+      mostrar = false;
+    }
+
+    fila.style.display = mostrar ? "" : "none";
+  });
 }
+
 
 // Renderizar tabla con paginación
 function renderizarTabla(lista) {
   console.log("Datos de las esculturas para renderizar:", lista); // Ver los datos antes de renderizarlos
 
   const tabla = document.querySelector("#tablaEsculturas");
+<<<<<<< HEAD
 
   tabla.innerHTML = "";
 
@@ -194,6 +233,42 @@ function renderizarTabla(lista) {
 }
 
 
+=======
+  tabla.innerHTML = "";
+
+  const inicio = (pagina - 1) * porPagina;
+  const paginadas = lista.slice(inicio, inicio + porPagina);
+
+  paginadas.forEach(escultura => {
+    // 👇 Aquí imprimimos la URL de la imagen para depuración
+    console.log("URL imagen:", `http://localhost:3000${escultura.Esc_Imagen}`);
+
+    // Renderizar cada escultura en la tabla
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${escultura.Esc_Codigo}</td>
+      <td>${escultura.Esc_Nombre}</td>
+      <td>${parseInt(escultura.Esc_Precio)}</td>
+      <td>${escultura.Esc_Pulgadas}</td>
+      <td><img src="http://localhost:3000${escultura.Esc_Imagen}" style="max-width: 60px; height: auto; object-fit: contain;"></td>
+      <td>${escultura.stock}</td> 
+      <td>
+          <button onclick="editarEscultura(${escultura.Id_Escultura})">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button onclick="eliminarEscultura(${escultura.Id_Escultura})">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button onclick="publicarOcultarEscultura(${escultura.Id_Escultura})">
+            <i class="fas ${escultura.publicado ? 'fa-eye-slash' : 'fa-eye'}"></i>
+          </button>
+      </td>
+    `;
+    tabla.appendChild(fila);
+  });
+}
+
+>>>>>>> c80883a (Codigo Act)
 // Función para publicar u ocultar una escultura
 async function publicarOcultarEscultura(id) {
   try {
@@ -262,7 +337,11 @@ async function cargarEsculturasPublicadas() {
     document.getElementById("novedades-container").innerHTML = "<p>Error al cargar esculturas.</p>";
   }
 }
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> c80883a (Codigo Act)
 
 
 // Inicialización al cargar

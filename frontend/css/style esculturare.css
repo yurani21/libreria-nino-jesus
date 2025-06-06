@@ -1,162 +1,241 @@
-#contenido-frame{
-  width: 100%;
-  height: 100vh;
-  border: none;
-}
-
-/* Estilos generales */
 body {
-  font-family: 'Times New Roman', Times, serif;
   margin: 0;
-  background-color: #f4f4f4;
-  display:flex;
-  
-  
-  
+  font-family: Arial, sans-serif;
+  background-color: #f3f3f3;
+  font-size: 14px; /* Tamaño uniforme */
 }
 
-/* Contenedor principal */
 .container {
   display: flex;
-  width: 100%;
-  font-size: 18px;
 }
 
 .sidebar {
   width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    height: 100vh;
-    padding: 20px;
-}
-/*barra lateral */
-.sidebar-nav ul {
-  list-style: none;
-  padding: 0;
-  font-size: 20px;
-}
-
-.sidebar-nav ul li {
-  margin: 30px 0;
-}
-
-.sidebar-nav ul li a {
+  background-color: #3f51b5;
   color: white;
-  text-decoration: none;
   height: 100vh;
-  padding: 30px;
-  
-
-}
-/* Contenido principal */
-.main-content {
-  flex: 1;
-    padding: 8px;
-    background: linear-gradient( 45deg, #1184b194, #FFEBCD);
+  display: flex;
+  flex-direction: column;
 }
 
-/* header {
-  background-color: #34495e;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  border-radius: 5px;
-} */
-
-/* Controles del reporte */
-.report-controls {
+.sidebar-header {
+  padding: 1rem;
+  background-color: #303f9f;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
 }
 
-.report-controls label {
+.sidebar-header i {
+  margin-right: 0.5rem;
+}
+
+.sidebar-header span {
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
-.report-controls select, .report-controls button {
-  padding: 8px;
-  font-size: 16px;
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
 }
 
-button{
-  background-color: #98cdf0dc;
-  color: black;
-  padding: 10px;
-  margin: 5px;
+.sidebar-nav a {
+  color: white;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-nav a.active,
+.sidebar-nav a:hover {
+  background-color: #1a237e;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  background-color: #303f9f;
+  padding: 1rem;
+}
+
+.sidebar-footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.main-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-actions input,
+.header-actions select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.header-actions button {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  border: 1px solid #000000;
-  border-radius: 5px;
-  
-}
-button:hover{
-  background-color: #a2afaf;
-  
 }
 
-/* Tabla de reportes */
-table {
-  background-color: #eeebe7;
-    padding: 8px;
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.header-actions button:hover {
+  background-color: #303f9f;
 }
 
-th, td {
-  border: 1px solid #000000;
-  padding: 6px;
-  text-align: center;
+.search-box {
+  position: relative;
 }
 
-table th {
-  background-color: #7ba9d6;
+.search-box input {
+  padding: 0.5rem 2rem 0.5rem 1rem;
 }
 
-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
+.search-box i {
+  position: absolute;
+  right: 10px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #44759498;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.panel {
+  background: white;
+  padding: 1rem;
+  margin-top: 1rem;
   border-radius: 5px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ddd;
+  padding: 0.6rem;
+  text-align: left;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background: #ddd;
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 6px;
+  width: 400px;
+  max-width: 95%;
+}
+
+.modal-content h3 {
+  margin-top: 0;
   text-align: center;
-  width: 300px;
+  font-size: 1.3rem;
 }
 
-.modal input, .modal select {
-  width: 90%;
-  padding: 10px;
-  margin: 5px;
+.modal-content label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
 }
 
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-/* Responsive */
-@media (max-width: 768px) {
-  .container {
-      flex-direction: column;
-  }
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
 
-  .sidebar {
-      width: 100%;
-      text-align: center;
-  }
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  .report-controls {
-      flex-direction: column;
-      align-items: stretch;
-  }
+.modal-actions button[type="submit"] {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.modal-actions button[type="submit"]:hover {
+  background-color: #303f9f;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #ccc;
+}
+
+.hidden {
+  display: none;
 }

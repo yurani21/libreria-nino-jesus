@@ -46,26 +46,27 @@ router.post('/', upload.single('Esc_Imagen'), async (req, res) => {
 });
 
 // Actualizar escultura
-router.put('/:id', upload.single('Esc_Imagen'), async (req, res) => {
-  const { id } = req.params;
-  const { Esc_Codigo, Esc_Nombre, Esc_Precio, Esc_Pulgadas, stock } = req.body;
-
-  let Esc_Imagen = req.file ? `/uploads/${req.file.filename}` : null;
-
+router.put('/api/esculturas/:id', async (req, res) => {
   try {
-    if (!Esc_Imagen) {
-      const [old] = await pool.promise().query('SELECT Esc_Imagen FROM esculturas WHERE Id_Escultura = ?', [id]);
-      Esc_Imagen = old[0]?.Esc_Imagen;
+    const id = req.params.id;
+    const { Esc_Codigo, Esc_Nombre, Esc_Precio, Esc_Pulgadas, stock } = req.body;
+
+    if (!Esc_Codigo || !Esc_Nombre || !Esc_Precio || !Esc_Pulgadas || !stock) {
+      return res.status(400).json({ error: 'Datos incompletos' });
     }
 
-    await pool.promise().execute(
-      `UPDATE esculturas SET 
-       Esc_Codigo=?, Esc_Nombre=?, Esc_Precio=?, Esc_Pulgadas=?, Esc_Imagen=?, stock=?
-       WHERE Id_Escultura=?`,
-      [Esc_Codigo, Esc_Nombre, Esc_Precio, Esc_Pulgadas, Esc_Imagen, stock, id]
+    const [result] = await pool.query(
+      'UPDATE esculturas SET Esc_Codigo = ?, Esc_Nombre = ?, Esc_Precio = ?, Esc_Pulgadas = ?, stock = ? WHERE Id_Escultura = ?',
+      [Esc_Codigo, Esc_Nombre, Esc_Precio, Esc_Pulgadas, stock, id]
     );
-    res.json({ message: 'Escultura actualizada' });
-  } catch (err) {
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Escultura no encontrada' });
+    }
+
+    res.json({ message: 'Escultura actualizada correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar escultura:', error);
     res.status(500).json({ error: 'Error al actualizar escultura' });
   }
 });
@@ -114,6 +115,7 @@ router.put('/publicar-ocultar/:id', async (req, res) => {
 });
 
 // Esculturas publicadas
+<<<<<<< HEAD
 router.get("/esculturas/catalogo", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM esculturas WHERE publicado = TRUE");
@@ -124,6 +126,19 @@ router.get("/esculturas/catalogo", async (req, res) => {
   }
 });
 
+=======
+router.get('/catalogo', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM esculturas WHERE publicado = 1');
+    res.json(rows);
+  } catch (err) {
+    console.error('Error al obtener esculturas publicadas:', err);
+    res.status(500).json({ error: 'Error al obtener esculturas publicadas' });
+  }
+});
+
+
+>>>>>>> c80883a (Codigo Act)
 // Ruta de prueba de conexión a la base de datos
 router.get('/test-db', async (req, res) => {
   try {

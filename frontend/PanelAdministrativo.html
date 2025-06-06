@@ -1,100 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/style admin.css" />
-  <title>Panel de Administración - Inventario</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Panel de Administración - Inventario</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link rel="stylesheet" href="../frontend/css/style admin.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
-  <div class="container">
-    <aside class="sidebar">
-      <h2>Panel Administrativo</h2>
-      <nav class="sidebar-nav">
-        <ul>
-          <li><a href="#">Inventario</a></li>
-          <li><a href="../frontend/esculturas religiosas.html">Esculturas</a></li>
-          <li><a href="#">Clientes</a></li>
-          <li><a href="../frontend/reportes.html">Reportes</a></li>
-          <li><a href="../frontend/configuracion.html">Configuración</a></li>
-        </ul>
-      </nav>
-    </aside>
+<body class="body-bg">
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    <i class="fas fa-boxes"></i>
+                    <span>Panel Admin</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a class="active" href="#"><i class="fas fa-box"></i> Inventario</a></li>
+                    <li><a href="../frontend/esculturas religiosas.html"><i class="fas fa-monument"></i> Esculturas</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Carrito_Compras</a></li>
+                    <li><a href="../frontend/reportes.html"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+                    <li><a href="../frontend/configuracion.html"><i class="fas fa-cog"></i> Configuración</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </aside>
 
-    <main class="main-content">
-      <header>
-        <h1>Gestión de Inventario</h1>
-      </header>
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestión de Inventario</h1>
+                <div class="search-box">
+                    <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarPublicaciones()" />
+                    <i class="fas fa-search"></i>
+                </div>
+            </header>
 
-      <section class="dashboard">
-        <p>Administra cada detalle de los productos o servicios que vendes.</p>
+            <p class="subtitle">Administra cada detalle de los productos o servicios que vendes</p>
 
-        <div class="controls">
-          <button class="btn btn-add" onclick="mostrarFormulario()">+ Agregar Producto</button>
-          
-          <select id="filtroCategoria" onchange="filtrarPublicaciones()">
-            <option value="todas">Mostrar todo</option>
-            <option value="libro">Libros</option>
-            <option value="biblia">Biblias</option>
-            <option value="novena">Novenas</option>
-          </select>
-          <input id="buscador" placeholder="Buscar..." onkeyup="buscarPublicaciones()" />
-        </div>
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Listado de Productos</h2>
+                    <div class="actions">
+                        <select id="filtroCategoria" onchange="filtrarPublicaciones()">
+                            <option value="todas">Mostrar todo</option>
+                            <option value="libro">Libros</option>
+                            <option value="biblia">Biblias</option>
+                            <option value="novena">Novenas</option>
+                        </select>
+                        <button onclick="mostrarFormulario()"><i class="fas fa-plus"></i> Agregar Producto</button>
+                    
+                    </div>
+                </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Editorial</th>
-              <th>Categoría</th>
-              <th>Stock</th>
-              <th>Imagen</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tablaPublicaciones"></tbody>
-        </table>
-        
-        <p id="mensajeVacio" style="text-align: center; display: none; color: #3246f5;">No se encontraron resultados</p>
+                <div class="table-container">
+                    <table id="miTabla" class="display">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Editorial</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPublicaciones">
+                            <!-- Filas generadas por JavaScript -->
+                        </tbody>
+                    </table>
+                    <p id="mensajeVacio" class="mensaje-vacio hidden">No se encontraron resultados</p>
+                </div>
 
-          <div class="paginacion" id="paginacion" style="text-align: center; margin-top: 20px;">
-            <button onclick="paginaAnterior()">Anterior</button>
-            <span id="numeroPagina">Página 1</span>
-            <button onclick="paginaSiguiente()">Siguiente</button>
-        </div>
-          
-          
-      </section>
-    </main>
-  </div>
-
-  <!-- MODAL AGREGAR Y EDITAR -->
-  <div class="modal" id="modalAgregar" style="display: none;">
-    <center><h3 id="titulo-modal" style="font-size: 30px; color: rgb(0, 0, 0);">Nuevo Producto</h3></center>
-    <input type="hidden" id="idLibro" />
-    <input type="text" id="codigo" placeholder="Código" />
-    <input type="text" id="nombre" placeholder="Nombre" />
-    <input type="number" id="precio" placeholder="Precio" />
-    <input type="text" id="editorial" placeholder="Editorial" />
-    <select id="categoria">
-      <option value="libro">Libro</option>
-      <option value="biblia">Biblia</option>
-      <option value="novena">Novena</option>
-    </select>
-    <input type="file" id="imagen" />
-    <input type="number" id="stock" placeholder="Stock inicial" min="0" />
-    <div class="botones-formulario">
-        <button onclick="guardarPublicacion()">Guardar</button>
-        <button onclick="cerrarFormulario()">Cancelar</button>
+                <div class="pagination">
+                    <span>Mostrando <span id="inicioPagina">1</span> a <span id="finPagina">5</span> de <span id="totalPublicaciones">0</span> registros</span>
+                    <div class="pagination-buttons">
+                        <button onclick="paginaAnterior()"><i class="fas fa-chevron-left"></i></button>
+                        <span id="numeroPagina">1</span>
+                        <button onclick="paginaSiguiente()"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+
+    <!-- Modal para agregar/editar producto -->
+    <div id="modalAgregar" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="titulo-modal">Nuevo Producto</h3>
+                <button onclick="cerrarFormulario()"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="modal-form">
+                <div class="form-group"><label>Código <input type="text" id="codigo" /></label></div>
+                <div class="form-group"><label>Nombre <input type="text" id="nombre" /></label></div>
+                <div class="form-group"><label>Precio <input type="number" id="precio" /></label></div>
+                <div class="form-group"><label>Editorial <input type="text" id="editorial" /></label></div>
+                <div class="form-group">
+                    <label>Categoría 
+                        <select id="categoria">
+                            <option value="libro">Libro</option>
+                            <option value="biblia">Biblia</option>
+                            <option value="novena">Novena</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="form-group"><label>Stock <input type="number" id="stock" min="0" /></label></div>
+                <div class="form-group"><label>Imagen <input type="file" id="imagen" /></label></div>
+                <div class="modal-actions">
+                    <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+                    <button type="button" onclick="guardarPublicacion()">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
     
-  </div>
 
-
-  <!-- Tu JavaScript se separa en su propio archivo -->
-  <script src="../frontend/js/panel-inventario.js"></script>
+    <script src="../frontend/js/panel-inventario.js"></script>
+<script src="../frontend//js/config-apariencia.js"></script>
 
 </body>
 </html>

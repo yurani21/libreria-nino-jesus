@@ -3,69 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <!-- Cambié el nombre de la hoja de estilos para evitar espacios en el nombre -->
     <link rel="stylesheet" href="../frontend/css/style esculturare.css">
     <title>Esculturas Religiosas</title>
+=======
+    <title>Esculturas Religiosas - Panel Administrativo</title>
+    <link rel="stylesheet" href="../frontend/css/style esculturare.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+>>>>>>> c80883a (Codigo Act)
 </head>
 <body>
-
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
-            <h2>Panel de Administrativo</h2>
+            <div class="sidebar-header">
+                <i class="fas fa-church"></i>
+                <span>Librería Niño Jesús</span>
+                <button id="toggleSidebar"><i class="fas fa-bars"></i></button>
+            </div>
             <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../frontend/PanelAdministrativo.html">Inventario</a></li>
-                    <li><a href="../frontend/esculturas-religiosas.html">Esculturas</a></li>
-                    <li><a href="#">Clientes</a></li>
-                    <li><a href="../frontend/reportes.html">Reportes</a></li>
-                    <li><a href="../frontend/configuracion.html">Configuración</a></li>
-                </ul>
+                <a href="../frontend/PanelAdministrativo.html"><i class="fas fa-boxes"></i> Inventario</a>
+                <a href="../frontend/esculturas-religiosas.html" class="active"><i class="fas fa-monument"></i> Esculturas</a>
+                <a href="#"><i class="fas fa-users"></i> Carrito_Compras</a>
+                <a href="../frontend/reportes.html"><i class="fas fa-chart-line"></i> Reportes</a>
+                <a href="../frontend/configuracion.html"><i class="fas fa-cog"></i> Configuración</a>
             </nav>
+            <div class="sidebar-footer">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <header>
+            <header class="main-header">
                 <h1>Esculturas Religiosas</h1>
-                <p>"Arte que inspira fe, esculturas que elevan el espíritu"</p>
+                <div class="search-box">
+                    <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarPublicaciones()" />
+                    <i class="fas fa-search"></i>
+                </div>
+
+                <div class="header-actions">
+                    <!-- <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarEstatuas()"> -->
+                </div>
             </header>
 
-            <div class="controls">
-                <button class="btn btn-add" onclick="mostrarFormulario()">+ Agregar Estatua</button>
+            <p class="subtitle">Arte Sagrado en Volumen: Administra las Representaciones de la Fe</p>
 
-                <select id="filtroCategoria" onchange="filtrarEstatuas()">
-                    <option value="todas">Mostrar todo</option>
-                    <option value="pequeña">Pequeñas</option>
-                    <option value="mediana">Medianas</option>
-                    <option value="grande">Grandes</option>
-                </select>
-                <input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscarEstatuas()">
-            </div>
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Listado de Productos</h2>
+                    <div class="actions">
+                        <select id="filtroCategoria" onchange="filtrarEstatuas()">
+                            <option value="todas">Mostrar todo</option>
+                            <option value="libro">Pequeñas</option>
+                            <option value="biblia">Medianas</option>
+                            <option value="novena">Grandes</option>
+                        </select>
+                        <button onclick="mostrarFormulario()"><i class="fas fa-plus"></i> Agregar Estatua</button>
+                    </div>
+                </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Pulgadas</th>
-                        <th>Imagen</th>
-                        <th>Stock</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaEsculturas"></tbody>
-            </table>
-
-            <p id="mensajeVacio" style="text-align: center; display: none; color: #3246f5;">No se encontraron resultados</p>
-        
-            <div class="paginacion" id="paginacion" style="text-align: center; margin-top: 20px;">
-                <button onclick="paginaAnterior()">« Anterior</button>
-                <span id="paginaActual">1</span>
-                <button onclick="paginaSiguiente()">Siguiente »</button>
-            </div>
+            <!-- Tabla de esculturas -->
+            <section class="table-container">
+                <table id="miTabla" class="display">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Pulgadas</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEsculturas">
+                        <!-- Filas generadas por JS -->
+                    </tbody>
+                </table>
+                <p id="mensajeVacio" class="hidden">No se encontraron resultados</p>
+                <div class="pagination">
+                    <span>Página <span id="paginaActual">1</span></span>
+                    <button onclick="paginaAnterior()">Anterior</button>
+                    <button onclick="paginaSiguiente()">Siguiente</button>
+                </div>
+            </section>
         </main>
-    </div>
 
+<<<<<<< HEAD
     <!-- Modal para agregar/editar estatua -->
     <div class="modal" id="modalFormulario" style="display: none;">
         <h3 id="tituloModal">Nueva Estatua</h3>
@@ -80,10 +106,36 @@
             <button type="submit">Guardar</button>
             <button type="button" onclick="cerrarFormulario()">Cancelar</button>
         </form>
+=======
+        <!-- Modal para agregar/editar estatua -->
+        <div id="modalFormulario" class="modal hidden">
+            <div class="modal-content">
+                <h3 id="tituloModal">Nueva Estatua</h3>
+                <form id="formEscultura" enctype="multipart/form-data" onsubmit="guardarEscultura(); return false;">
+                    <input type="hidden" id="idEscultura">
+                    <label for="codigo">Código</label>
+                    <input type="text" id="codigo" placeholder="Código">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre">
+                    <label for="precio">Precio</label>
+                    <input type="number" id="precio" placeholder="Precio">
+                    <label for="pulgadas">Pulgadas</label>
+                    <input type="number" id="pulgadas" placeholder="Pulgadas">
+                    <label for="stock">Stock</label>
+                    <input type="number" id="stock" placeholder="Stock">
+                    <label for="imagen">Imagen</label>
+                    <input type="file" id="imagen">
+                    <div class="modal-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" onclick="cerrarFormulario()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+>>>>>>> c80883a (Codigo Act)
     </div>
     
 
     <script src="../frontend/js/panel-esculturas.js"></script>
-
 </body>
 </html>

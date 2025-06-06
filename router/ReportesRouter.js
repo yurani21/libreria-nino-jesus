@@ -57,6 +57,7 @@ router.get('/productos-vendidos', async (req, res) => {
     res.status(500).json({ message: 'Error al obtener los productos vendidos', error });
   }
 });
+<<<<<<< HEAD
 
 // Valor total del inventario
 router.get('/valor-inventario', async (req, res) => {
@@ -127,6 +128,91 @@ router.get('/resumen-inventario', async (req, res) => {
 });
 
 
+=======
+
+// Valor total del inventario
+router.get('/valor-inventario', async (req, res) => {
+  try {
+    const [results] = await connection.query('SELECT SUM(precio * stock) AS valor_total FROM productos');
+    res.json({ valor_total: results[0].valor_total });
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener valor del inventario' });
+  }
+});
+
+// Resumen inventario
+router.get('/resumen-inventario', async (req, res) => {
+  try {
+    // Consulta para obtener la cantidad de productos por tipo
+    const tiposQuery = `
+  SELECT tipo, COUNT(*) AS cantidad
+  FROM productos
+  GROUP BY tipo;
+`;
+
+    
+    const [productosPorTipo] = await connection.query(tiposQuery);
+    
+    const resumen = {
+      tipos: { Libro: 0, Biblia: 0, Novena: 0, Escultura: 0 },
+      valorTotal: 0,
+      masVendidos: [],
+      esculturasMasVendidas: []
+    };
+
+    // Procesar los tipos de productos
+    productosPorTipo.forEach((producto) => {
+      if (producto.tipo === 'libro') resumen.tipos.Libro = producto.cantidad;
+      if (producto.tipo === 'biblia') resumen.tipos.Biblia = producto.cantidad;
+      if (producto.tipo === 'novena') resumen.tipos.Novena = producto.cantidad;
+      if (producto.tipo === 'escultura') resumen.tipos.Escultura = producto.cantidad;
+    });
+
+    // Consulta para obtener el valor total de los productos en inventario
+    const valorTotalQuery = `
+  SELECT SUM(precio * stock) AS valorTotal
+  FROM productos;
+`;
+
+  
+
+    const [valorTotalResult] = await connection.query(valorTotalQuery);
+    resumen.valorTotal = valorTotalResult[0].valorTotal;
+
+    // Consulta para obtener los productos más vendidos (5 más vendidos)
+    const masVendidosQuery = `
+      SELECT p.nombre, SUM(v.cantidad_vendida) AS total_vendido
+      FROM ventas v
+      JOIN productos p ON v.producto_id = p.id
+      GROUP BY p.id
+      ORDER BY total_vendido DESC
+      LIMIT 5;
+    `;
+    const [masVendidos] = await connection.query(masVendidosQuery);
+    resumen.masVendidos = masVendidos;
+
+    // Consulta para obtener las esculturas más vendidas (5 más vendidas)
+    const esculturasMasVendidasQuery = `
+      SELECT p.nombre, SUM(v.cantidad_vendida) AS total_vendido
+      FROM ventas v
+      JOIN productos p ON v.producto_id = p.id
+      WHERE p.tipo = 'escultura'
+      GROUP BY p.id
+      ORDER BY total_vendido DESC
+      LIMIT 5;
+    `;
+    const [esculturasMasVendidas] = await connection.query(esculturasMasVendidasQuery);
+    resumen.esculturasMasVendidas = esculturasMasVendidas;
+
+    // Enviar el resultado al frontend
+    res.json(resumen);
+  } catch (error) {
+    console.error('Error al obtener el resumen del inventario:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+});
+
+>>>>>>> c80883a (Codigo Act)
 // Obtener movimientos
 router.get('/movimientos', async (req, res) => {
   try {
